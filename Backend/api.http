@@ -1,0 +1,41 @@
+# POST http://localhost:8080/test
+
+# POST http://localhost:8080/fakedata
+
+# GET http://localhost:8080/alllistings
+
+# GET http://localhost:8080/alllistings/searchedlisting?title=laptop
+
+# POST http://localhost:8080/alllistings/addlistings
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZDAxMjk3YjYwM2Y3M2MwNzk3M2M3NSIsImlhdCI6MTc2Mzc5NTg4NCwiZXhwIjoxNzY0NDAwNjg0fQ.0VPrTIB14HlPJo_9MJ2hATlZY-bjx8s3i8lhI_qLRBU
+
+# {
+#   "title": "Dell G15",
+#   "description": "Best gaming laptop with rtx 4090 with intel 14th gen i9",
+#   "price": 100000,
+#   "image": "https://example.com/Dellg15.jpg"
+# }
+
+
+# POST http://localhost:8080/signup
+# Content-Type: application/json
+
+# {
+#     "name":"harsh1122 gadewar",
+#     "email":"gadewaarr112@gmail.com",
+#     "password":"1234"
+# }
+GET http://localhost:8080/alllistings/addtocart
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZDAxMjk3YjYwM2Y3M2MwNzk3M2M3NSIsImlhdCI6MTc2MzgwNzYzMCwiZXhwIjoxNzY0NDEyNDMwfQ.BlygS_ISS7er4hCpDXlEA4H2PjMNKc7sfHEOAqShSi0
+
+
+
+ GET http://localhost:8080/login
+Content-Type: application/json
+ {
+     "email":"gadewaarr112@gmail.com",
+     "password":"1234"
+ }
+
+ 
