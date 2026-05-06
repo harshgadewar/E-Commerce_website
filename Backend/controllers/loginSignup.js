@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import { generateToken } from "../utils/generateToken.js";
 
 export let login = async (req, res) => {
-  console.log("hitting!");
 
   let { email, password } = req.body;
   if (!email || !password) {
@@ -37,7 +36,6 @@ export let login = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
-  console.log("signuphitting!");
   const { name, email, password } = req.body;
 
   console.log(name);
