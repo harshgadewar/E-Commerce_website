@@ -1,10 +1,12 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import emailOtpRoutes from "./routes/emailOtp.js";
 
 
-dotenv.config();
 const app = express();
 
 app.use(
@@ -24,6 +26,8 @@ import testModel from "./models/test.js";
 import productRoutes from "./routes/productRoutes.js";
 import listingRoutes from "./routes/listingRoutes.js";
 import signupLoginRoute from './routes/loginSignupRoute.js';
+import buyProductRoute from './routes/buyProductRoute.js';
+
 const url = process.env.MONGODB_URL;
 
 
@@ -32,8 +36,8 @@ const url = process.env.MONGODB_URL;
 //api
 app.use("/",signupLoginRoute);
 app.use("/alllistings",listingRoutes);
-
-
+app.use("/email", emailOtpRoutes);
+app.use("/buyproduct",buyProductRoute);
 
 
 
@@ -42,6 +46,7 @@ const start = async() => {
     app.listen("8080", () => {
     console.log("server is RUNNING !!");
   });
+
 
   mongoose.connect(url);
   console.log("DataBase Conntected!!");

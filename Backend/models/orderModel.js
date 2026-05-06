@@ -8,13 +8,32 @@ const orders = mongoose.Schema({
   productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "productModel",
-    quantity: Number,
   },
   totalPrice: {
     type: Number,
   },
-  status: {
+  // status: {
+  //   type: String,
+  // },
+  paymentMethod: {
     type: String,
+    enum: ["COD", "UPI"],
+  },
+  paymentStatus: {
+    type: String,
+    enum: ["pending", "completed"],
+    default:"pending"
+  },
+  shippingAddress: {
+    type: String,
+  },
+  createdAt: {
+    type: Date,
+    default:Date.now
+  },
+
+  quantity: {
+    type: Number,
   },
 });
 
