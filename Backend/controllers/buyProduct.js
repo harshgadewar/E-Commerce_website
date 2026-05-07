@@ -67,6 +67,6 @@ export const buyProduct = async (req, res) => {
   } catch (e) {
     return res
       .status(500)
-      .json({ success: false, message: "internal server error" });
+      .json({ success: false, message: "internal server error " });
   }
 };

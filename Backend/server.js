@@ -27,6 +27,7 @@ import productRoutes from "./routes/productRoutes.js";
 import listingRoutes from "./routes/listingRoutes.js";
 import signupLoginRoute from './routes/loginSignupRoute.js';
 import buyProductRoute from './routes/buyProductRoute.js';
+import myOrdersRoute  from "./routes/myordersRoute.js";
 
 const url = process.env.MONGODB_URL;
 
@@ -38,7 +39,7 @@ app.use("/",signupLoginRoute);
 app.use("/alllistings",listingRoutes);
 app.use("/email", emailOtpRoutes);
 app.use("/buyproduct",buyProductRoute);
-
+app.use("/myorders",myOrdersRoute);
 
 
 const start = async() => {
