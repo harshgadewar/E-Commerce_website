@@ -19,7 +19,7 @@ export const addListing = async (req, res) => {
       image,
     });
 
-    data.save();
+    await data.save();
     return res.status(200).json({ message: "data saved !!" });
 
     }
