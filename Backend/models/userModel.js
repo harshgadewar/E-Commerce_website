@@ -18,8 +18,12 @@ const user = mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["buyer", "seller"],
+    enum: ["buyer", "admin", "seller"],
     default: "buyer",
+  },
+  isBlock: {
+    type: Boolean,
+    default: false,
   },
 });
 

@@ -1,10 +1,10 @@
-import {productModel} from "../models/product.js";
+import { productModel } from "../../models/product.js";
 
 export const addListing = async (req, res) => {
   try {
-    const userId = req.user._id; 
+    const userId = req.user._id;
 
-    console.log("userId :",userId);
+    console.log("userId :", userId);
     console.log(req.body);
     let { title, description, price, image } = req.body;
 
@@ -21,10 +21,7 @@ export const addListing = async (req, res) => {
 
     await data.save();
     return res.status(200).json({ message: "data saved !!" });
-
-    }
-  
-  catch (e) {
-    return res.status(400).json({ error:e.message });
+  } catch (e) {
+    return res.status(400).json({ error: e.message });
   }
 };
