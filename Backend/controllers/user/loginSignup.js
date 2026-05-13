@@ -16,9 +16,7 @@ export let login = async (req, res) => {
       return res.status(404).json({ message: "user not found" });
     }
 
-    if(user.isBlock){
-      return res.status(400).json({message:"user is blocked"});
-    }
+   
 
     let isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
