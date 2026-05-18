@@ -42,7 +42,6 @@ export const signup = async (req, res) => {
   console.log(email);
 
   console.log(password);
-
   try {
     const existingUser = await userModel.findOne({ email });
     console.log(existingUser);

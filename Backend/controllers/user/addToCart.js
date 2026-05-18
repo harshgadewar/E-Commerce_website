@@ -2,7 +2,7 @@ import { cartModel } from "../../models/cartModel.js";
 
 export const cart = async (req, res) => {
   try {
-    console.log("cart hitting!!");
+  
 
     const userId = req.user._id;
 
