@@ -1,15 +1,13 @@
-import { userModel } from "../models/userModel.js";
+import { userModel } from "../../models/userModel.js";
 import bcrypt from "bcrypt";
 
-import { generateToken } from "../utils/generateToken.js";
+import { generateToken } from "../../utils/generateToken.js";
 
 export let login = async (req, res) => {
-
   let { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ message: "please fill all the fields" });
   }
-  
 
   try {
     let user = await userModel.findOne({ email });
@@ -18,6 +16,8 @@ export let login = async (req, res) => {
       return res.status(404).json({ message: "user not found" });
     }
 
+   
+
     let isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid password" });
@@ -25,7 +25,7 @@ export let login = async (req, res) => {
     let token = generateToken(user._id);
     console.log(user);
     console.log(user._id);
-    
+
     console.log("Generated Token:", token);
 
     res.json({ token });
@@ -39,13 +39,12 @@ export const signup = async (req, res) => {
   const { name, email, password } = req.body;
 
   console.log(name);
-    console.log(email);
+  console.log(email);
 
-      console.log(password);
-
+  console.log(password);
   try {
     const existingUser = await userModel.findOne({ email });
-          console.log(existingUser);
+    console.log(existingUser);
 
     if (existingUser) {
       return res.status(302).json({ message: "User already exists" });
@@ -59,7 +58,7 @@ export const signup = async (req, res) => {
       password: hashedPassword,
     });
 
-              console.log(newUser);
+    console.log(newUser);
 
     await newUser.save();
 

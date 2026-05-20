@@ -48,7 +48,7 @@ app.use(express.urlencoded({ extended: true ,limit: "10kb"}));
 app.use(hpp());
 app.use(helmet());
 app.use(morgan("dev"));
-app.use(mongoSanitize());
+// app.use(mongoSanitize());
 
 
 
@@ -63,6 +63,8 @@ import signupLoginRoute from './routes/loginSignupRoute.js';
 import buyProductRoute from './routes/buyProductRoute.js';
 import myOrdersRoute  from "./routes/myordersRoute.js";
 import emailOtpRoutes from "./routes/emailOtp.js";
+import becomeSellerRoute from "./routes/sellerRoutes/becomeSellerRoute.js"
+import sellerActionRoute from "./routes/sellerRoutes/sellerActionRoute.js";
 
 const url = process.env.MONGODB_URL;
 
@@ -78,7 +80,11 @@ app.use("/email", emailOtpRoutes);
 app.use("/buyproduct",buyProductRoute);
 app.use("/myorders",myOrdersRoute);
 
-//err handling middleware
+//seller route
+app.use("/becomeseller",becomeSellerRoute);
+app.use("/selleraction",sellerActionRoute)
+
+
 app.use(errorMiddleware);
 
 

@@ -1,10 +1,10 @@
-import { productModel } from "../models/product.js";
-import { orderModel } from "../models/orderModel.js";
+import { productModel } from "../../models/product.js";
+import { orderModel } from "../../models/orderModel.js";
 
 export const buyProduct = async (req, res) => {
   try {
     let { paymentMethod, shippingAddress, quantity } = req.body;
-    let productId=req.params.id;
+    let productId = req.params.id;
 
     if (!productId || !shippingAddress || !quantity || !paymentMethod) {
       return res.status(400).json({ message: "All fields are required" });
@@ -63,7 +63,9 @@ export const buyProduct = async (req, res) => {
 
     await orderData.save();
 
-    return res.status(201).json({ message: "Order placed sucessfully" ,user,productId});
+    return res
+      .status(201)
+      .json({ message: "Order placed sucessfully", user, productId });
   } catch (e) {
     return res
       .status(500)
