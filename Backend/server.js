@@ -57,11 +57,8 @@ app.use(morgan("dev"));
 
 
 import testModel from "./models/test.js";
-import productRoutes from "./routes/productRoutes.js";
-import listingRoutes from "./routes/listingRoutes.js";
+import useractionRoutes from "./routes/userActionRoute.js";
 import signupLoginRoute from './routes/loginSignupRoute.js';
-import buyProductRoute from './routes/buyProductRoute.js';
-import myOrdersRoute  from "./routes/myordersRoute.js";
 import emailOtpRoutes from "./routes/emailOtp.js";
 import becomeSellerRoute from "./routes/sellerRoutes/becomeSellerRoute.js"
 import sellerActionRoute from "./routes/sellerRoutes/sellerActionRoute.js";
@@ -73,12 +70,14 @@ const url = process.env.MONGODB_URL;
 
 //----------------------------------------------apis---------------------------------------------
 
-
+//login
 app.use("/",signupLoginRoute);
-app.use("/alllistings",listingRoutes);
+
+//useraction
+app.use("/useraction",useractionRoutes);
+
+//email verification
 app.use("/email", emailOtpRoutes);
-app.use("/buyproduct",buyProductRoute);
-app.use("/myorders",myOrdersRoute);
 
 //seller route
 app.use("/becomeseller",becomeSellerRoute);
