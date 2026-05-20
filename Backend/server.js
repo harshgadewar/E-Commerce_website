@@ -63,7 +63,8 @@ import signupLoginRoute from './routes/loginSignupRoute.js';
 import buyProductRoute from './routes/buyProductRoute.js';
 import myOrdersRoute  from "./routes/myordersRoute.js";
 import emailOtpRoutes from "./routes/emailOtp.js";
-import becomeSellerRoute from "./routes/becomeSellerRoute.js"
+import becomeSellerRoute from "./routes/sellerRoutes/becomeSellerRoute.js"
+import sellerActionRoute from "./routes/sellerRoutes/sellerActionRoute.js";
 
 const url = process.env.MONGODB_URL;
 
@@ -78,9 +79,12 @@ app.use("/alllistings",listingRoutes);
 app.use("/email", emailOtpRoutes);
 app.use("/buyproduct",buyProductRoute);
 app.use("/myorders",myOrdersRoute);
-app.use("/becomeseller",becomeSellerRoute);
 
-//err handling middleware
+//seller route
+app.use("/becomeseller",becomeSellerRoute);
+app.use("/selleraction",sellerActionRoute)
+
+
 app.use(errorMiddleware);
 
 

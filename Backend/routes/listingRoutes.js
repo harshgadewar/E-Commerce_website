@@ -8,8 +8,6 @@ import { isseller } from "../middleware/isSellerMiddleware.js";
 const router = express.Router();
 
 router.get("/", alllistings);
-router.post("/addlistings", authMiddleware,isseller, addListing);
-router.get("/viewsellerproduct", authMiddleware,isseller,viewSellerProduct );
 router.get("/searchedlisting", searchedListings);
 router.get("/addtocart", authMiddleware, cart);
 

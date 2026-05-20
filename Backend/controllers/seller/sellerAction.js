@@ -1,6 +1,8 @@
 import { productModel } from "../../models/product.js";
 import { sellerModel } from "../../models/sellerModel.js";
 
+//add product
+
 export const addListing = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -28,43 +30,88 @@ export const addListing = async (req, res) => {
   }
 };
 
+//view
 export const viewSellerProduct = async (req, res) => {
   try {
-    const sellerId=req.user._id;
-    if(!sellerId){
-          return res.status(400).json({ message: "login first" });
-
+    const sellerId = req.user._id;
+    if (!sellerId) {
+      return res.status(400).json({ message: "login first" });
     }
-   
 
-    const data=await productModel.find({sellerId});
-  
-       return res.status(200).json({ message:"Data Fetched successfully",data });
+    const data = await productModel.find({ sellerId });
+
+    return res.status(200).json({ message: "Data Fetched successfully", data });
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
 };
 
-// export const update=async(req,res)=>{
-//   try{
-//     let{title,description,price,image,stockQuantity}=req.body;
-//     const{productId}=req.params;
+//update
+export const update = async (req, res) => {
+  try {
+    let { title, description, price, image, stockQuantity } = req.body;
+    const { id } = req.params;
 
-//       const userId=req.user._id;
+    
+    const sellerId = req.user._id;
 
-//       if(productId)
+    if (!id) {
+      return res.status(400).json({ message: "Invalid productId" });
+    }
+    const product = await productModel.findById(id);
+    if (!product) {
+      return res.status(400).json({ message: "product does not exits" });
+    }
 
-// const updatedData=productModel.findByIdAndUpdate(productId,
-//   {
-//     title,
-//     description,
-//     price,
-//     image,
-//     stockQuantity
-//   }
-// )
+    if (sellerId.toString() !== product.sellerId.toString()) {
+      return res
+        .status(400)
+        .json({ message: "You can update only your products" });
+    }
 
-//   }catch(e){
+    let updatedData = await productModel.findByIdAndUpdate(
+      id,
+      {
+        title,
+        description,
+        price,
+        image,
+        stockQuantity,
+      },
+      { new: true },
+    );
 
-//   }
-// }
+    return res.status(200).json({ message: "Data updated", updatedData });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+};
+
+//delete
+
+export const deleteProduct = async (req, res) => {
+  try {
+    const sellerId = req.user._id;
+    const { id } = req.params;
+
+    const product = await productModel.findById(id);
+
+    if (!product) {
+      return res.status(400).json({ message: "Invalid productid" });
+    }
+
+    if (sellerId.toString() !== product.sellerId.toString()) {
+      return res.status(403).json({
+        message: "You can delete only your products",
+      });
+    }
+
+    await productModel.findByIdAndUpdate(id, {
+      isDelete: true,
+    });
+
+    return res.status(200).json({ message: "product deleted" });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+};
