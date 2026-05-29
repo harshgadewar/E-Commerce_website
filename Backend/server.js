@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import {errorMiddleware} from "./middleware/errorMiddleware.js"; 
 import express from "express";
+import {errorMiddleware} from "./middleware/errorMiddleware.js"; 
 import mongoose from "mongoose";
 import cors from "cors";
 import helmet from "helmet";
@@ -62,6 +62,7 @@ import signupLoginRoute from './routes/loginSignupRoute.js';
 import emailOtpRoutes from "./routes/emailOtp.js";
 import becomeSellerRoute from "./routes/sellerRoutes/becomeSellerRoute.js"
 import sellerActionRoute from "./routes/sellerRoutes/sellerActionRoute.js";
+import paymentRouter from "./routes/paymentRoute.js";
 
 const url = process.env.MONGODB_URL;
 
@@ -83,6 +84,8 @@ app.use("/email", emailOtpRoutes);
 app.use("/becomeseller",becomeSellerRoute);
 app.use("/selleraction",sellerActionRoute)
 
+//payment route
+app.use("/payment",paymentRouter);
 
 app.use(errorMiddleware);
 

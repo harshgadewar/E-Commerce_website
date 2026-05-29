@@ -42,9 +42,9 @@ export const buyProduct = async (req, res) => {
     let paymentStatus = "pending";
 
     let DataBaseProductPrice = product.price * quantity;
-    if (paymentMethod == "UPI") {
-      paymentStatus = "completed";
-    }
+    // if (paymentMethod == "UPI") {
+    //   paymentStatus = "completed";
+    // }
 
     let orderData = new orderModel({
       userId: user,

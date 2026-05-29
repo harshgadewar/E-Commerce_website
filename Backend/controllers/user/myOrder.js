@@ -2,7 +2,7 @@ import { orderModel } from "../../models/orderModel.js";
 
 export const myOrders = async (req, res) => {
   try {
-    console.log("my orders hitting!!");
+    
     let user = req.user._id;
 
     const data = await orderModel.find({ userId: user }).populate("productId");
