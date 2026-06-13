@@ -10,9 +10,13 @@ import rateLimit from "express-rate-limit";
 import morgan from "morgan";
 import hpp from "hpp";
 import mongoSanitize from "express-mongo-sanitize";
+import cookieParser from "cookie-parser";
+
 
 
 const app = express();
+
+
 
 // --------------------------------------- RATE LIMIT ------------------------------------------------------------
 
@@ -49,6 +53,8 @@ app.use(hpp());
 app.use(helmet());
 app.use(morgan("dev"));
 // app.use(mongoSanitize());
+app.use(cookieParser());
+
 
 
 
