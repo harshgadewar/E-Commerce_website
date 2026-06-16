@@ -63,18 +63,18 @@ export let login = async (req, res) => {
     }
 
     //access token and refresh token
-    const acessToken = generateAccessTokenutil(user._id);
+
     const refreshToken = generateRefreshToken(user._id);
 
-    console.log("Generated accessToken:", acessToken);
-    console.log("Generated refToken:", refreshToken);
+    await redisClient.set(refreshToken, user._id.toString(), {
+      EX: 7 * 24 * 60 * 60, //refresh token set in redis
+    });
+
+    const acessToken = generateAccessTokenutil(user._id);
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
     });
-
-    console.log("cookie",req.cookies);
-console.log("cookiereq",req.cookies.refreshToken);
 
     res.json({ acessToken });
   } catch (err) {
@@ -88,9 +88,10 @@ console.log("cookiereq",req.cookies.refreshToken);
 export const logout = async (req, res) => {
   try {
     res.clearCookie("refreshToken");
+    await redisClient.del(refreshToken);
 
     return res.status(200).json({ message: "logout sucessfully!!" });
   } catch (e) {
-   return  res.status(500).json({ message: "internal server error" });
+    return res.status(500).json({ message: "internal server error" });
   }
 };

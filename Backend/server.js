@@ -11,7 +11,7 @@ import morgan from "morgan";
 import hpp from "hpp";
 import mongoSanitize from "express-mongo-sanitize";
 import cookieParser from "cookie-parser";
-
+import {redisClient} from "./config/redis.js";
 
 
 const app = express();
@@ -92,6 +92,24 @@ app.use("/selleraction",sellerActionRoute)
 
 //payment route
 app.use("/payment",paymentRouter);
+
+app.get("/redis-test", async (req, res) => {
+
+ await redisClient.set(
+   "name",
+   "harsh"
+ );
+
+ const data =
+ await redisClient.get(
+   "name"
+ );
+
+ res.json({
+   data
+ });
+
+});
 
 app.use(errorMiddleware);
 
