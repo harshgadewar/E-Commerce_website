@@ -1,6 +1,6 @@
 import { userModel } from "../../models/userModel.js";
 import bcrypt from "bcrypt";
-
+import { redisClient } from "../../config/redis.js";
 import { generateRefreshToken } from "../../utils/generateRefreshToken.js";
 import { generateAccessToken } from "./accessTokenController.js";
 import { generateAccessTokenutil } from "../../utils/generateAccessToken.js";
@@ -44,6 +44,8 @@ export const signup = async (req, res) => {
 // login
 
 export let login = async (req, res) => {
+
+
   let { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ message: "please fill all the fields" });
