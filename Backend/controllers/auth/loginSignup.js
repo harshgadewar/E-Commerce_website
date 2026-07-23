@@ -1,6 +1,6 @@
 import { userModel } from "../../models/userModel.js";
 import bcrypt from "bcrypt";
-
+import { redisClient } from "../../config/redis.js";
 import { generateRefreshToken } from "../../utils/generateRefreshToken.js";
 import { generateAccessToken } from "./accessTokenController.js";
 import { generateAccessTokenutil } from "../../utils/generateAccessToken.js";
@@ -10,10 +10,6 @@ import { generateAccessTokenutil } from "../../utils/generateAccessToken.js";
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
 
-  console.log(name);
-  console.log(email);
-
-  console.log(password);
   try {
     const existingUser = await userModel.findOne({ email });
     console.log(existingUser);
@@ -29,8 +25,6 @@ export const signup = async (req, res) => {
       email: email,
       password: hashedPassword,
     });
-
-    console.log(newUser);
 
     await newUser.save();
 
@@ -76,7 +70,18 @@ export let login = async (req, res) => {
       httpOnly: true,
     });
 
-    res.json({ acessToken });
+    res.cookie("accessToken", acessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
+
+    console.log(acessToken);
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "internal server error" });

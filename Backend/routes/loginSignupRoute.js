@@ -6,7 +6,7 @@ import { generateAccessToken } from "../controllers/auth/accessTokenController.j
 const router = express.Router();
 
 router.post("/signup", authLimiter, signup);
-router.get("/login", authLimiter, login);
+router.post("/login", authLimiter, login);
 router.get("/logout",logout)
 router.get("/accesstoken",generateAccessToken)
 
