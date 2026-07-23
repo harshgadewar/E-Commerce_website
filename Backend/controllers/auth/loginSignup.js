@@ -10,10 +10,6 @@ import { generateAccessTokenutil } from "../../utils/generateAccessToken.js";
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
 
-  console.log(name);
-  console.log(email);
-
-  console.log(password);
   try {
     const existingUser = await userModel.findOne({ email });
     console.log(existingUser);
@@ -30,8 +26,6 @@ export const signup = async (req, res) => {
       password: hashedPassword,
     });
 
-    console.log(newUser);
-
     await newUser.save();
 
     res.status(200).json({ message: "user registerd" });
@@ -44,8 +38,6 @@ export const signup = async (req, res) => {
 // login
 
 export let login = async (req, res) => {
-
-
   let { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ message: "please fill all the fields" });
@@ -78,7 +70,18 @@ export let login = async (req, res) => {
       httpOnly: true,
     });
 
-    res.json({ acessToken });
+    res.cookie("accessToken", acessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
+
+    console.log(acessToken);
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "internal server error" });

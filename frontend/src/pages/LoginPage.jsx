@@ -12,14 +12,17 @@ export function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:8080/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:8080/login",
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        },
+      );
 
-      console.log(res.data);
-
-      localStorage.setItem("token", res.data.acessToken);
 
       alert("Login Successful");
 

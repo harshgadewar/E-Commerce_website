@@ -1,5 +1,6 @@
 import { FiSearch, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
 import logo from "/image.png";
+import { Link } from "react-router-dom";
 
 export function Navbar() {
   return (
@@ -31,15 +32,18 @@ export function Navbar() {
             <span className="text-1xl">Wishlist</span>
           </div>
 
-          <div className="relative flex items-center gap-2 cursor-pointer">
+          <Link to={"/cart"}
+          className="relative flex items-center gap-2 cursor-pointer">
             <FiShoppingCart size={20} />
 
             <span className="absolute -top-2 left-4 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
               8
             </span>
 
-            <span className="text-1xl">Cart</span>
-          </div>
+            <span className="text-1xl" >
+              Cart
+            </span>
+          </Link>
 
           <div className="relative">
             <FiUser size={20} />
