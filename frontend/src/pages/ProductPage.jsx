@@ -4,6 +4,21 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Truck, ShieldCheck, RotateCcw, CreditCard } from "lucide-react";
 
+const AddtoCart = async (productId) => {
+  try {
+    await axios.post(
+      `http://localhost:8080/useraction/addtocart/${productId}`,
+      {
+        quantity:1
+      },
+      { withCredentials: true },
+    );
+    alert("added to cart!!");
+    fetchproduct();
+  } catch (e) {
+    console.log(e);
+  }
+};
 export function ProductPage() {
   const [product, setProduct] = useState({});
 
@@ -62,7 +77,10 @@ export function ProductPage() {
 
             {/* Buttons */}
             <div className="flex gap-4 mt-8">
-              <button className="flex-1 bg-yellow-400 hover:bg-yellow-500 h-12 rounded-xl font-semibold transition">
+              <button
+                onClick={() => AddtoCart(product._id)}
+                className="flex-1 bg-yellow-400 hover:bg-yellow-500 h-12 rounded-xl font-semibold transition"
+              >
                 Add To Cart
               </button>
 
@@ -72,47 +90,7 @@ export function ProductPage() {
             </div>
 
             {/* Delivery Card */}
-            {/* <div className="mt-8   bg-white ">
-              <div className="flex items-start gap-4 p-4">
-                <span className="text-xl">🚚</span>
 
-                <div>
-                  <p className="text-sm text-gray-500">Delivery</p>
-
-                  <p className="font-semibold">Delivered in 2 Days</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 p-4">
-                <span className="text-xl">🛡️</span>
-
-                <div>
-                  <p className="text-sm text-gray-500">Seller</p>
-
-                  <p className="font-semibold">Velora Official</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 p-4">
-                <span className="text-xl">↩️</span>
-
-                <div>
-                  <p className="text-sm text-gray-500">Returns</p>
-
-                  <p className="font-semibold">7 Days Easy Return</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 p-4">
-                <span className="text-xl">🔒</span>
-
-                <div>
-                  <p className="text-sm text-gray-500">Payment</p>
-
-                  <p className="font-semibold">Secure Transaction</p>
-                </div>
-              </div>
-            </div> */}
             <div className="mt-8 rounded-xl  bg-white ">
               <div className="flex items-center gap-4 p-4 ">
                 <Truck className="w-6 h-6 text-green-600" />

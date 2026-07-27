@@ -52,7 +52,9 @@ export const authMiddleware = async (req, res, next) => {
   if (!token) {
     return res.status(401).json({ message: "Token missing" });
   }
-
+console.log("Token:", token);
+console.log("Cookies:", req.cookies);
+console.log("Authorization:", req.headers.authorization);
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 

@@ -3,7 +3,7 @@ import {
   addListing,
   viewSellerProduct,
 } from "../controllers/seller/sellerAction.js";
-import { cart, viewCart } from "../controllers/user/addToCart.js";
+import { cart, decreaseCartQuantity, increaseCartQuantity, viewCart } from "../controllers/user/addToCart.js";
 import { authMiddleware } from "../middleware/authoMiddleware.js";
 import express from "express";
 import { isadmin } from "../middleware/isAdminMiddleware.js";
@@ -16,7 +16,9 @@ const router = express.Router();
 
 router.get("/alllistings", alllistings);
 router.get("/searchedproducts", searchedListings);
-router.post("/addtocart", authMiddleware, cart);
+router.post("/addtocart/:productId", authMiddleware, cart);
+router.patch("/cart/:cartId/increase", authMiddleware, increaseCartQuantity);
+router.patch("/cart/:cartId/decrease", authMiddleware, decreaseCartQuantity);
 router.get("/viewcart", authMiddleware, viewCart);
 router.post("/buyproducts/:id", authMiddleware, buyProduct);
 router.get("/myorders", authMiddleware, myOrders);

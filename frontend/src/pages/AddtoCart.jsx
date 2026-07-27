@@ -3,6 +3,38 @@ import { ProductCard } from "../components/ProductCard";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const increaseQuantity = async (cartId) => {
+  try {
+    await axios.patch(
+      `http://localhost:8080/useraction/cart/${cartId}/increase`,
+      {},
+      {
+        withCredentials: true,
+      },
+    );
+
+    fetchCart(); 
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const decreaseQuantity = async (cartId) => {
+  try {
+    await axios.patch(
+      `http://localhost:8080/useraction/cart/${cartId}/decrease`,
+      {},
+      {
+        withCredentials: true,
+      },
+    );
+
+    fetchCart();
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export function AddtoCart() {
   const [carts, setCart] = useState([]);
 
@@ -21,6 +53,7 @@ export function AddtoCart() {
 
     fetchcart();
   }, []);
+
   return (
     <div>
       <Navbar />
@@ -59,7 +92,10 @@ export function AddtoCart() {
 
                     {/* Quantity */}
                     <div className="flex items-center gap-3 mt-5">
-                      <button className="w-9 h-9 rounded-full border text-lg hover:bg-gray-100">
+                      <button
+                        onClick={() => decreaseQuantity(cart._id)}
+                        className="w-9 h-9 rounded-full border text-lg hover:bg-gray-100"
+                      >
                         −
                       </button>
 
@@ -67,7 +103,10 @@ export function AddtoCart() {
                         {cart.quantity}
                       </span>
 
-                      <button className="w-9 h-9 rounded-full border text-lg hover:bg-gray-100">
+                      <button
+                        onClick={() => increaseQuantity(cart._id)}
+                        className="w-9 h-9 rounded-full border text-lg hover:bg-gray-100"
+                      >
                         +
                       </button>
 
