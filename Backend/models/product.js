@@ -24,6 +24,7 @@ const product = mongoose.Schema({
   },
   stockQuantity: {
     type: Number,
+    required: true,
   },
   isDelete: {
     type: Boolean,

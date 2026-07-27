@@ -9,9 +9,9 @@ export const addListing = async (req, res) => {
 
     console.log("userId :", userId);
     console.log(req.body);
-    let { title, description, price, image } = req.body;
+    let { title, description, price, image,stockQuantity } = req.body;
 
-    if (!title || !description || !price || !image) {
+    if (!title || !description || !price || !image ||!stockQuantity) {
       return res.status(400).json({ message: "All Fields required !!" });
     }
 
@@ -20,6 +20,7 @@ export const addListing = async (req, res) => {
       description,
       price,
       image,
+      stockQuantity,
       sellerId: userId,
     });
 
