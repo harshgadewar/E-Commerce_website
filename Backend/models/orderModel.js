@@ -6,17 +6,24 @@ const orders = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "userModel",
     },
+    products: [
+  {
     productId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "productModel",
     },
+    quantity: {
+      type: Number,
+    },
+  },
+],
     totalPrice: {
       type: Number,
     },
     status: {
       type: String,
-      enum: ["placed", "shipped", "delivered", "cancelled"],
-      default: "placed",
+      enum: [ "arriving", "delivered", "cancelled"],
+      default: "arriving",
     },
     paymentMethod: {
       type: String,
@@ -34,9 +41,7 @@ const orders = mongoose.Schema(
       pincode: Number,
     },
 
-    quantity: {
-      type: Number,
-    },
+    
     razorpay_order_id: {
       type: String,
     },
@@ -54,3 +59,7 @@ const orders = mongoose.Schema(
 );
 
 export const orderModel = mongoose.model("orderModel", orders);
+
+
+
+

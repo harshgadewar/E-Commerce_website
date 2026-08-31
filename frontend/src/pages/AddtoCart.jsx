@@ -2,6 +2,7 @@ import { Navbar } from "../components/Navbar";
 import { ProductCard } from "../components/ProductCard";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const increaseQuantity = async (cartId) => {
   try {
@@ -13,7 +14,7 @@ const increaseQuantity = async (cartId) => {
       },
     );
 
-    fetchCart(); 
+    fetchCart();
   } catch (e) {
     console.log(e);
   }
@@ -37,16 +38,30 @@ const decreaseQuantity = async (cartId) => {
 
 export function AddtoCart() {
   const [carts, setCart] = useState([]);
-
+  const [checkoutdata, setCheckout] = useState({});
   useEffect(() => {
     const fetchcart = async () => {
       try {
-        const res = await axios.get(
+        const res1 = await axios.get(
           "http://localhost:8080/useraction/viewcart",
           { withCredentials: true },
         );
-        setCart(res.data.cart);
+       
+        let res2 = await axios.get(
+          `http://localhost:8080/useraction/cart/checkout`,
+
+          {
+            withCredentials: true,
+          },
+        );
+
+        setCart(res1.data.cart);
+        setCheckout(res2.data);
+
+  
       } catch (e) {
+        console.log(e.response);
+        console.log(e.response?.data);
         console.log(e);
       }
     };
@@ -58,7 +73,7 @@ export function AddtoCart() {
     <div>
       <Navbar />
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
-        <h1 className="font-bold text-3xl text-gray-900">Cart</h1>
+        <h1 className="font-bold text-3xl text-gray-900 mt-4">Cart</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div>
             <div className="w-full">
@@ -125,8 +140,8 @@ export function AddtoCart() {
 
               <div className="space-y-3 mt-4">
                 <div className="flex justify-between">
-                  <span>Price</span>
-                  <span>₹50,000</span>
+                  <span>Price ({checkoutdata.productnum}items)</span>
+                  <span>₹{checkoutdata.total + 2000}</span>
                 </div>
 
                 <div className="flex justify-between">
@@ -143,13 +158,19 @@ export function AddtoCart() {
 
                 <div className="flex justify-between text-xl font-bold">
                   <span>Total</span>
-                  <span>₹48,000</span>
+                  <span>{checkoutdata.total}</span>
                 </div>
               </div>
 
-              <button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
+              {/* <button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
                 Proceed to Checkout
-              </button>
+              </button> */}
+              <Link
+                to={"/payment"}
+                className="block w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition text-center"
+              >
+                Proceed to Checkout
+              </Link>
             </div>
           </div>
         </div>

@@ -15,17 +15,27 @@ export const alllistings = async (req, res) => {
 
 
 //Searched Listings
-export const searchedListings = async (req, res) => {
+export const searchProducts = async (req, res) => {
   try {
-    let { title } = req.query;
+    const { q } = req.query;
 
-    let data = await productModel.findOne({ title:{ $regex: title, $options: "i" } });
-    if (!data) {
-      return res.status(400).json({ message: "something wents wrong" });
+    if (!q || q.trim() === "") {
+      return res.status(200).json([]);
     }
-res.json(data);
 
+    const products = await productModel.find({
+      isDelete: false,
+      $or: [
+        { title: { $regex: q, $options: "i" } },
+        { description: { $regex: q, $options: "i" } },
+      ],
+    });
+
+    return res.status(200).json(products);
   } catch (e) {
-    return res.status(400).json({ error: e.message });
+    return res.status(500).json({
+      message: "Search failed",
+      error: e.message,
+    });
   }
 };
