@@ -7,6 +7,9 @@ import axios from "axios";
 
 export function HomePage() {
   const [products, setProducts] = useState([]);
+  const [electronics, setElectronics] = useState([]);
+  const [search, setSearch] = useState("");
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -20,18 +23,61 @@ export function HomePage() {
       }
     };
 
+    const fetchElectronics = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8080/useraction/category/electronics",
+        );
+
+        setElectronics(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     fetchProducts();
+    fetchElectronics();
   }, []);
+
+  const handleSearch = async (query) => {
+    try {
+      if (!query.trim()) {
+        setSearching(false);
+
+        const res = await axios.get(
+          "http://localhost:8080/useraction/alllistings",
+        );
+
+        setProducts(res.data);
+        return;
+      }
+
+      setSearching(true);
+
+      const res = await axios.get(
+        `http://localhost:8080/useraction/search?q=${encodeURIComponent(
+          query,
+        )}`,
+      );
+
+      setProducts(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div>
-      <Navbar />
-      <CategoryBar />
+      <Navbar onSearch={handleSearch} />
+      <div className="sticky top-20 z-40 bg-white">
+        <CategoryBar />
+      </div>
 
       {/* Hero image */}
 
-      <div className="max-w-7xl mx-auto  mt-10 rounded-4xl px-2 md:px-0">
+      <div className="max-w-7xl mx-auto  mt-10 rounded-4xl px-2 pt-10 md:px-0">
         <img
-          src="/heroImg.png"
+          src="/heroimgg.png"
           alt="hero"
           className="
             w-full
@@ -51,24 +97,24 @@ export function HomePage() {
           <button>View All →</button>
         </div>
 
-        <div className="flex overflow-x-auto gap-4 mt-4">
-        {products.map((product) => (
+        <div className="flex overflow-x-auto gap-4 mt-4 scrollbar-hide">
+          {products.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}
         </div>
       </div>
 
-      {/*Discount  */}
+      {/*Electronics  */}
 
       <div className="max-w-7xl mx-auto mt-10 px-2 md:px-0">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">Discount</h2>
+          <h2 className="text-2xl font-bold">Electronics</h2>
 
           <button>View All →</button>
         </div>
 
-        <div className="flex overflow-x-auto gap-4 mt-4">
-       {products.map((product) => (
+        <div className="flex overflow-x-auto gap-4 mt-4 scrollbar-hide">
+          {electronics.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}
         </div>

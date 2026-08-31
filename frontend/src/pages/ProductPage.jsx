@@ -3,13 +3,14 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Truck, ShieldCheck, RotateCcw, CreditCard } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const AddtoCart = async (productId) => {
   try {
     await axios.post(
       `http://localhost:8080/useraction/addtocart/${productId}`,
       {
-        quantity:1
+        quantity: 1,
       },
       { withCredentials: true },
     );
@@ -62,7 +63,6 @@ export function ProductPage() {
             {/* Price */}
             <div className="mt-8">
               <p className="text-2xl  text-black">₹{product.price}</p>
-
               <div className="flex items-center gap-3 mt-2">
                 <span className="text-gray-400 line-through">₹1,09,000</span>
 
@@ -84,9 +84,12 @@ export function ProductPage() {
                 Add To Cart
               </button>
 
-              <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white h-12 rounded-xl font-semibold transition">
+              <Link
+                to={"/address"}
+                className="block flex-1 bg-orange-500 hover:bg-orange-600 text-white h-12 rounded-xl font-semibold transition text-center"
+              >
                 Buy Now
-              </button>
+              </Link>
             </div>
 
             {/* Delivery Card */}

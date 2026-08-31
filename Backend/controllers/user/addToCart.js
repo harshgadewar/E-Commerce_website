@@ -7,18 +7,17 @@ export const cart = async (req, res) => {
     const userId = req.user._id;
     const { productId } = req.params;
     const { quantity } = req.body;
- 
+
     if (!productId || !quantity) {
       return res.status(400).json({
         success: false,
         message: "Product ID and quantity are required",
       });
     }
-   
 
     // Product exists?
     const productInfo = await productModel.findById(productId);
-   
+
     if (!productInfo) {
       return res.status(404).json({
         success: false,
@@ -52,7 +51,6 @@ export const cart = async (req, res) => {
 
       cartInfo.quantity = newQuantity;
       cartInfo.total = newQuantity * productInfo.price;
-
 
       await cartInfo.save();
 
@@ -88,10 +86,11 @@ export const cart = async (req, res) => {
 // View Cart
 export const viewCart = async (req, res) => {
   try {
+    console.log("cart hittingf");
     const userId = req.user._id;
 
     const data = await cartModel.find({ userId }).populate("productId");
-
+    
     return res.status(200).json({
       success: true,
       cart: data,
@@ -203,6 +202,38 @@ export const decreaseCartQuantity = async (req, res) => {
     });
   } catch (err) {
     console.error(err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+
+export const checkOutFeature = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const cart = await cartModel.find({ userId }).populate("productId");
+
+ 
+
+    let total=0;
+    let productnum=0;
+    for(let items of cart){
+
+      total+=items.productId.price*items.quantity;
+      productnum++;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "check",
+      total,productnum
+    });
+  } catch (e) {
+    console.error(e);
+
     return res.status(500).json({
       success: false,
       message: "Internal server error",

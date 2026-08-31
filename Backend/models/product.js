@@ -26,6 +26,21 @@ const product = mongoose.Schema({
     type: Number,
     required: true,
   },
+
+  category: {
+    type: String,
+    required: true,
+    enum: [
+      "Electronics",
+      "Computers",
+      "Mobiles",
+      "Gaming",
+      "Grocery",
+      "Beauty",
+      "Home",
+      "fashion",
+    ],
+  },
   isDelete: {
     type: Boolean,
     default: false,

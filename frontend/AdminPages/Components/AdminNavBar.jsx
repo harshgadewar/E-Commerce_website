@@ -1,42 +1,30 @@
 import { FiSearch, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
-import logo from "/veloraaaalogo.png";
-import { SearchBar } from "./SearchBar";
+import logo from "/image.png";
 import { Link } from "react-router-dom";
 
-export function Navbar({ onSearch }) {
+export function AdminNavbar() {
   return (
-    <nav className="fixed top-0 left-0 w-full h-20 bg-white z-50 shadow-sm">
+    <nav className="w-full  h-20 b bg-[#F2F3F2]">
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4   items-center ">
-        <div className="flex items-center w-50 mr-4 mt-2">
-          <img src={logo} alt="Velora" className="w-50 h-auto object-contain" />
-        </div>
-
-        {/*search bar  */}
-
-        <div className="hidden md:flex w-full md:max-w-3xl mx-2 md:mx-10">
-          <SearchBar onSearch={onSearch} />
+        {/* Logo */}
+        <div className="gap-3 flex items-center mr-4 pr-2 md:pr-10">
+          <img src={logo} alt="Velora" className="h-12 w-auto" />
         </div>
 
         {/* Right Section */}
         <div className="hidden md:flex items-center gap-10 ">
           <Link
-            to={"/myorder"}
+            to={"/adminallproduct"}
             className="flex items-center gap-2 cursor-pointer"
           >
-            <span className="text-1xl">MyOrders</span>
+            <span className="text-1xl">All Products</span>
           </Link>
 
           <Link
-            to={"/cart"}
+            to={"/adminallorderlist"}
             className="relative flex items-center gap-2 cursor-pointer"
           >
-            <FiShoppingCart size={20} />
-
-            <span className="absolute -top-2 left-4 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              8
-            </span>
-
-            <span className="text-1xl">Cart</span>
+            <span className="text-1xl">Allorders</span>
           </Link>
 
           <div className="relative">
@@ -66,10 +54,6 @@ export function Navbar({ onSearch }) {
             </span>
           </div>
         </div>
-      </div>
-
-      <div className="flex-1 w-full md:hidden mx-2 md:mx-10">
-        <SearchBar onSearch={onSearch} />
       </div>
     </nav>
   );

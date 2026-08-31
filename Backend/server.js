@@ -14,6 +14,8 @@ import cookieParser from "cookie-parser";
 import {redisClient} from "./config/redis.js";
 
 
+//campus x dsmp 2.0
+//code basics
 const app = express();
 
 
@@ -66,9 +68,10 @@ import testModel from "./models/test.js";
 import useractionRoutes from "./routes/userActionRoute.js";
 import signupLoginRoute from './routes/loginSignupRoute.js';
 import emailOtpRoutes from "./routes/emailOtp.js";
-import becomeSellerRoute from "./routes/sellerRoutes/becomeSellerRoute.js"
-import sellerActionRoute from "./routes/sellerRoutes/sellerActionRoute.js";
+import adminActionRoute from "./routes/adminRoutes/adminActionRoute.js";
 import paymentRouter from "./routes/paymentRoute.js";
+import testUploadRoute from "./routes/clouderoute.js";
+
 
 const url = process.env.MONGODB_URL;
 
@@ -86,12 +89,14 @@ app.use("/useraction",useractionRoutes);
 //email verification
 app.use("/email", emailOtpRoutes);
 
-//seller route
-app.use("/becomeseller",becomeSellerRoute);
-app.use("/selleraction",sellerActionRoute)
+//admin route
+app.use("/admin",adminActionRoute)
 
 //payment route
 app.use("/payment",paymentRouter);
+
+//cloud
+app.use("/test", testUploadRoute);
 
 app.get("/redis-test", async (req, res) => {
 
