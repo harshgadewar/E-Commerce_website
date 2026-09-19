@@ -92,11 +92,33 @@ export let login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    res.clearCookie("refreshToken");
-    await redisClient.del(refreshToken);
+    const refreshToken = req.cookies.refreshToken;
 
-    return res.status(200).json({ message: "logout sucessfully!!" });
+    if (refreshToken) {
+      await redisClient.del(refreshToken);
+    }
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Logout successfully!",
+    });
   } catch (e) {
-    return res.status(500).json({ message: "internal server error" });
+    console.log("Logout error:", e.message);
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
   }
 };

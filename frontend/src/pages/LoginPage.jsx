@@ -1,9 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export function Login() {
   const navigate = useNavigate();
+  const { fetchUser } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,10 +25,11 @@ export function Login() {
         },
       );
 
+      if (res.data.success) {
+        await fetchUser();
 
-      alert("Login Successful");
-
-      navigate("/");
+        navigate("/");
+      }
     } catch (err) {
       console.log(err);
       console.log(err.response);

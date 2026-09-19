@@ -51,7 +51,7 @@ export function AddressTakingPage() {
     <div>
       <Navbar />
 
-      <div className="max-w-3xl mx-auto mt-8">
+      <div className="max-w-3xl mx-auto mt-27">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Address</h1>
         <div className="bg-white  shadow-md rounded-lg p-6">
           <form onSubmit={handleSubmit}>

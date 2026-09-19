@@ -2,9 +2,18 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Loading } from "../components/Loading";
 
 export function PaymentPage() {
+  const navigate = useNavigate();
+
   const handlePayment = async () => {
+    if (!address?._id) {
+      alert("Please add an address before making a payment.");
+      return;
+    }
+
     try {
       const { data } = await axios.post(
         "http://localhost:8080/payment",
@@ -27,7 +36,6 @@ export function PaymentPage() {
 
         handler: async function (response) {
           console.log("Payment Success");
-        
 
           const verify = await axios.post(
             "http://localhost:8080/payment/verify",
@@ -38,8 +46,6 @@ export function PaymentPage() {
               withCredentials: true,
             },
           );
-
-         
         },
 
         theme: {
@@ -50,75 +56,134 @@ export function PaymentPage() {
       const razorpay = new window.Razorpay(options);
       razorpay.open();
     } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const addressfetch = async () => {
-    const [address, setAddress] = useState({});
-    try {
-      let res = await axios.get(
-        "http://localhost:8080/useraction/getaddress",
-        {},
-        {
-          withCredentials: true,
-        },
-      );
-      setAddress(res.data);
-    } catch (e) {
-        console.log(e);
+      console.log(err.message);
     }
   };
 
   const [carts, setCart] = useState([]);
   const [checkoutdata, setCheckout] = useState({});
+  const [address, setAddress] = useState({});
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const fetchcart = async () => {
+    const fetchData = async () => {
       try {
+        setLoading(true);
+
         const res1 = await axios.get(
           "http://localhost:8080/useraction/viewcart",
-          { withCredentials: true },
-        );
-
-        let res2 = await axios.get(
-          `http://localhost:8080/useraction/cart/checkout`,
-
           {
             withCredentials: true,
           },
         );
 
         setCart(res1.data.cart);
+
+        const res2 = await axios.get(
+          "http://localhost:8080/useraction/cart/checkout",
+          {
+            withCredentials: true,
+          },
+        );
+
         setCheckout(res2.data);
       } catch (e) {
-        console.log(e.response);
-        console.log(e.response?.data);
-        console.log(e);
+        console.log("Cart/checkout error:", e.response?.data || e.message);
+      }
+
+      try {
+        const res3 = await axios.get(
+          "http://localhost:8080/useraction/getaddress",
+          {
+            withCredentials: true,
+          },
+        );
+
+        setAddress(res3.data.address);
+      } catch (e) {
+        console.log("Address error:", e.response?.data || e.message);
+
+        setAddress({});
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchcart();
+    fetchData();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div>
       <Navbar />
-      <div className="max-w-7xl mx-auto pt-4">
+      <div className="max-w-7xl mx-auto pt-4 mt-15">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 pt-8">
           <div>
-            <div className="w-full flex rounded shadow-md p-4 ">
-              <div>
-                <h1 className="mb-2 font-bold">Deliver to:</h1>
-                <h1 className="mb-2 text-gray-900">Name: Harsh Gadewar</h1>
-                <p className="mb-2 text-gray-900">
-                  148, sai colony kudwa gondia
-                </p>
-                <p>7767035081</p>
-              </div>
-              <div>
-                <button>change</button>
-              </div>
+            <div className="w-full flex rounded shadow-md p-4 justify-between">
+              {address?._id ? (
+                <>
+                  <div>
+                    <h1 className="mb-2 font-bold">Deliver to:</h1>
+
+                    <h1 className="mb-2 text-gray-900">
+                      Name: {address.firstname} {address.lastname}
+                    </h1>
+
+                    <p className="mb-2 text-gray-900">
+                      Address: {address.address}
+                    </p>
+
+                    <p className="mb-2 text-gray-900">
+                      Phoneno: {address.phoneno}
+                    </p>
+
+                    <p className="mb-2 text-gray-900">State: {address.state}</p>
+
+                    <p className="mb-2 text-gray-900">
+                      Pincode: {address.pincode}
+                    </p>
+                  </div>
+
+                  <div>
+                    <button
+                      className="bg-[#F36F30] py-1 px-2 rounded text-white"
+                      onClick={() => {
+                        navigate("/address");
+                      }}
+                    >
+                      Edit Address
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <h1 className="font-bold text-lg">
+                      No delivery address found
+                    </h1>
+
+                    <p className="text-gray-600 mt-1">
+                      Please add an address before placing your order.
+                    </p>
+                  </div>
+
+                  <div>
+                    <button
+                      className="bg-[#F36F30] py-2 px-4 rounded text-white"
+                      onClick={() => {
+                        navigate("/address");
+                      }}
+                    >
+                      Add Address
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
+
             <div className="w-full mt-4 rounded-xl shadow-lg">
               {carts.map((cart) => (
                 <div
@@ -161,12 +226,7 @@ export function PaymentPage() {
                 <div className="space-y-3 mt-4">
                   <div className="flex justify-between">
                     <span>Price ({checkoutdata.productnum}items)</span>
-                    <span>₹{checkoutdata.total + 2000}</span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <span>Discount</span>
-                    <span className="text-green-600">-₹2,000</span>
+                    <span>₹{checkoutdata.total}</span>
                   </div>
 
                   <div className="flex justify-between">

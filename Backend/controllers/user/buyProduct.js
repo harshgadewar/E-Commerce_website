@@ -48,13 +48,20 @@ export const buyProduct = async (req, res) => {
 
     let orderData = new orderModel({
       userId: user,
-      productId,
+
+      products: [
+        {
+          productId: productId,
+          quantity: quantity,
+        },
+      ],
+
       totalPrice: DataBaseProductPrice,
       shippingAddress,
-      quantity,
       paymentMethod,
       paymentStatus,
     });
+
     let updatedStock = product.stockQuantity - quantity;
 
     let productdata = await productModel.findByIdAndUpdate(productId, {

@@ -69,7 +69,7 @@ export const payments = async (req, res) => {
       order,
     });
   } catch (e) {
-    console.error(e);
+    console.error(e.message);
 
     return res.status(500).json({
       success: false,
@@ -84,7 +84,7 @@ export const verifyPayment = async (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
       req.body;
-   
+
     // ---------------- VERIFY SIGNATURE ----------------
 
     const body = `${razorpay_order_id}|${razorpay_payment_id}`;
@@ -95,13 +95,11 @@ export const verifyPayment = async (req, res) => {
       .digest("hex");
 
     if (expectedSignature !== razorpay_signature) {
-     
       return res.status(400).json({
         success: false,
         message: "Payment verification failed",
       });
     }
-   
 
     const userId = req.user._id;
 
@@ -115,19 +113,19 @@ export const verifyPayment = async (req, res) => {
         message: "Cart is empty",
       });
     }
-   
+
     // ---------------- GET DEFAULT ADDRESS ----------------
 
     const address = await addressModel.findOne({ userId });
-   
+
     if (!address) {
-     
+      console.log("address not found!!");
       return res.status(400).json({
         success: false,
         message: "Address not found",
       });
     }
-   
+
     let totalPrice = 0;
 
     // ---------------- STOCK CHECK ----------------
@@ -136,7 +134,6 @@ export const verifyPayment = async (req, res) => {
       const product = item.productId;
 
       if (item.quantity > product.stockQuantity) {
-        
         return res.status(400).json({
           success: false,
           message: `${product.title} is out of stock`,
@@ -167,7 +164,8 @@ export const verifyPayment = async (req, res) => {
       razorpay_payment_id,
       razorpay_signature,
     });
- 
+    ///-------------------------------------------------------------
+
     // ---------------- REDUCE STOCK ----------------
     console.log("STARTING STOCK UPDATE");
     for (const item of cart) {
