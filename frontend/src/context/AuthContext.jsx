@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
 
   const fetchUser = async () => {
     try {
-      const res = await api.get("http://localhost:8080/me", {
+      const res = await api.get(`${import.meta.env.VITE_API_URL}/me`, {
         withCredentials: true,
       });
 

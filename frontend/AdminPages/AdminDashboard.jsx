@@ -1,78 +1,3 @@
-// import { AdminNavbar } from "./Components/AdminNavbar";
-
-// export function AdminDashboard() {
-//   return (
-//     <>
-//       <AdminNavbar />
-
-//       <div className="min-h-screen py-8">
-//         <div className="max-w-6xl mx-auto px-4">
-
-//           {/* Heading */}
-//           <h1 className="text-3xl font-bold text-gray-900">
-//             Admin Dashboard
-//           </h1>
-
-//           {/* Stats */}
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
-
-//             <div className="bg-white rounded-xl shadow-md p-6">
-//               <p className="text-gray-500">
-//                 Products
-//               </p>
-
-//               <h2 className="text-2xl font-bold mt-2">
-//                 400
-//               </h2>
-//             </div>
-
-//             <div className="bg-white rounded-xl shadow-md p-6">
-//               <p className="text-gray-500">
-//                 Orders
-//               </p>
-
-//               <h2 className="text-2xl font-bold mt-2">
-//                 400
-//               </h2>
-//             </div>
-
-//             <div className="bg-white rounded-xl shadow-md p-6">
-//               <p className="text-gray-500">
-//                 Users
-//               </p>
-
-//               <h2 className="text-2xl font-bold mt-2">
-//                 400
-//               </h2>
-//             </div>
-
-//           </div>
-
-//           {/* Recent Orders */}
-//           <div className="mt-10">
-
-//             <h2 className="text-xl font-bold text-gray-900 mb-4">
-//               Recent Orders
-//             </h2>
-
-//             <div className="bg-white rounded-xl shadow-md p-6">
-
-//               <p className="text-gray-500">
-//                 No recent orders
-//               </p>
-
-//             </div>
-
-//           </div>
-
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { AdminNavbar } from "./Components/AdminNavbar";
@@ -91,7 +16,7 @@ export function AdminDashboard() {
     const fetchDashboard = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8080/admin/adminpannel",
+          `${import.meta.env.VITE_API_URL}/admin/adminpannel`,
           {
             withCredentials: true,
           }

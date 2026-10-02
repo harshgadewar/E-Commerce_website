@@ -19,7 +19,7 @@ export function CategoryProductPage() {
         setLoading(true);
 
         const res = await axios.get(
-          `http://localhost:8080/useraction/category/${encodeURIComponent(
+          `${import.meta.env.VITE_API_URL}/useraction/category/${encodeURIComponent(
             category,
           )}`,
         );

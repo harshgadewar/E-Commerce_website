@@ -1,79 +1,3 @@
-// import { FiSearch, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
-// import logo from "/veloraaaalogo.png";
-// import { SearchBar } from "./SearchBar";
-// import { Link } from "react-router-dom";
-
-// export function Navbar({ onSearch }) {
-//   return (
-//     <nav className="fixed top-0 left-0 w-full  bg-white z-50 shadow-sm">
-//       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4   items-center ">
-//         <div className="flex items-center w-50 mr-4 mt-2">
-//           <img src={logo} alt="Velora" className="w-50 h-auto object-contain" />
-//         </div>
-
-//         {/*search bar  */}
-
-//         <div className="hidden md:flex w-full md:max-w-3xl mx-2 md:mx-10">
-//           <SearchBar onSearch={onSearch} />
-//         </div>
-
-//         {/* Right Section */}
-//         <div className="hidden md:flex items-center gap-10 ">
-//           <Link
-//             to={"/myorder"}
-//             className="flex items-center gap-2 cursor-pointer"
-//           >
-//             <span className="text-1xl">MyOrders</span>
-//           </Link>
-
-//           <Link
-//             to={"/cart"}
-//             className="relative flex items-center gap-2 cursor-pointer"
-//           >
-//             <FiShoppingCart size={20} />
-
-//             <span className="absolute -top-2 left-4 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-//               8
-//             </span>
-
-//             <span className="text-1xl">Cart</span>
-//           </Link>
-
-//           <div className="relative">
-//             <FiUser size={20} />
-
-//             <span className="absolute -top-2 left-4 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-//               1
-//             </span>
-//           </div>
-//         </div>
-
-//         {/* for mobile view */}
-//         <div className="flex md:hidden gap-2">
-//           <div className="relative flex items-center gap-2 cursor-pointer mr-3">
-//             <FiShoppingCart size={24} />
-
-//             <span className="absolute -top-2 left-4 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-//               8
-//             </span>
-//           </div>
-
-//           <div className="relative">
-//             <FiUser size={24} />
-
-//             <span className="absolute -top-2 left-4 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-//               1
-//             </span>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="flex-1 w-full md:hidden mx-2 md:mx-10">
-//         <SearchBar onSearch={onSearch} />
-//       </div>
-//     </nav>
-//   );
-// }
 
 import {
   FiSearch,
@@ -100,7 +24,7 @@ export function Navbar({ onSearch }) {
 
   const handleLogout = async () => {
     try {
-      await axios.get("http://localhost:8080/logout", {
+      await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
         withCredentials: true,
       });
 

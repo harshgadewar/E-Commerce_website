@@ -15,12 +15,12 @@ export function AddtoCart() {
       setLoading(true);
 
       const res1 = await axios.get(
-        "http://localhost:8080/useraction/viewcart",
+        `${import.meta.env.VITE_API_URL}/useraction/viewcart`,
         { withCredentials: true },
       );
 
       let res2 = await axios.get(
-        `http://localhost:8080/useraction/cart/checkout`,
+        `${import.meta.env.VITE_API_URL}/useraction/cart/checkout`,
 
         {
           withCredentials: true,
@@ -51,7 +51,7 @@ export function AddtoCart() {
   const increaseQuantity = async (cartId) => {
     try {
       await axios.patch(
-        `http://localhost:8080/useraction/cart/${cartId}/increase`,
+        `${import.meta.env.VITE_API_URL}/useraction/cart/${cartId}/increase`,
         {},
         {
           withCredentials: true,
@@ -67,7 +67,7 @@ export function AddtoCart() {
   const decreaseQuantity = async (cartId) => {
     try {
       await axios.patch(
-        `http://localhost:8080/useraction/cart/${cartId}/decrease`,
+        `${import.meta.env.VITE_API_URL}/useraction/cart/${cartId}/decrease`,
         {},
         {
           withCredentials: true,

@@ -10,7 +10,7 @@ export function AdminAllProduct() {
   const fetchProducts = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8080/admin/adminviewallproductt",
+        `${import.meta.env.VITE_API_URL}/admin/adminviewallproductt`,
         {
           withCredentials: true,
         },
@@ -36,7 +36,7 @@ export function AdminAllProduct() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:8080/admin/deleteproduct/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/admin/deleteproduct/${id}`, {
         withCredentials: true,
       });
 

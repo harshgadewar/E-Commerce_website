@@ -29,7 +29,7 @@ export function AddressTakingPage() {
 
     try {
       const res = axios.post(
-        "http://localhost:8080/useraction/saveaddress",
+        `${import.meta.env.VITE_API_URL}/useraction/saveaddress`,
         
           address,
         

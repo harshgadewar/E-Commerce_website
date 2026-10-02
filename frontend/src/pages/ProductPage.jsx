@@ -27,7 +27,7 @@ export function ProductPage() {
     const fetchProduct = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8080/useraction/viewproduct/${id}`,
+          `${import.meta.env.VITE_API_URL}/useraction/viewproduct/${id}`,
         );
 
         setProduct(res.data);
@@ -48,7 +48,7 @@ const addToCart = async () => {
     }
 
     const res = await axios.post(
-      `http://localhost:8080/useraction/addtocart/${product._id}`,
+      `${import.meta.env.VITE_API_URL}/useraction/addtocart/${product._id}`,
       {
         quantity: 1,
       },

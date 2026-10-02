@@ -19,7 +19,7 @@ export function SearchPage() {
         setLoading(true);
 
         const res = await axios.get(
-          `http://localhost:8080/useraction/search?q=${encodeURIComponent(
+          `${import.meta.env.VITE_API_URL}/useraction/search?q=${encodeURIComponent(
             query,
           )}`,
         );

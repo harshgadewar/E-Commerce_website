@@ -32,9 +32,9 @@ export function HomePage() {
         setLoading(true);
 
         const [productsRes, electronicsRes] = await Promise.all([
-          axios.get("http://localhost:8080/useraction/alllistings"),
+          axios.get(`${import.meta.env.VITE_API_URL}/useraction/alllistings`),
 
-          axios.get("http://localhost:8080/useraction/category/electronics"),
+          axios.get(`${import.meta.env.VITE_API_URL}/useraction/category/electronics`),
         ]);
 
         setProducts(productsRes.data);
@@ -55,7 +55,7 @@ export function HomePage() {
         setSearching(false);
 
         const res = await axios.get(
-          "http://localhost:8080/useraction/alllistings",
+          `${import.meta.env.VITE_API_URL}/useraction/alllistings`,
         );
 
         setProducts(res.data);
@@ -65,7 +65,7 @@ export function HomePage() {
       setSearching(true);
 
       const res = await axios.get(
-        `http://localhost:8080/useraction/search?q=${encodeURIComponent(
+        `${import.meta.env.VITE_API_URL}/useraction/search?q=${encodeURIComponent(
           query,
         )}`,
       );
