@@ -121,15 +121,11 @@ export function Navbar({ onSearch }) {
     <nav className="fixed top-0 left-0 w-full bg-white z-50 shadow-sm">
       {/* ================= NAVBAR ================= */}
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
-
         {/* LOGO */}
-        <div className="flex items-center w-50 mr-4 mt-2">
-          <img
-            src={logo}
-            alt="Velora"
-            className="w-50 h-auto object-contain"
-          />
-        </div>
+
+        <Link to={"/"} className="flex items-center w-50 mr-4 mt-2">
+          <img src={logo} alt="Velora" className="w-50 h-auto object-contain" />
+        </Link>
 
         {/* SEARCH */}
         <div className="hidden md:flex w-full md:max-w-3xl mx-2 md:mx-10">
@@ -138,7 +134,6 @@ export function Navbar({ onSearch }) {
 
         {/* ================= DESKTOP RIGHT SECTION ================= */}
         <div className="hidden md:flex items-center gap-10">
-
           {/* MY ORDERS */}
           <Link
             to="/myorder"
@@ -155,16 +150,13 @@ export function Navbar({ onSearch }) {
           >
             <FiShoppingCart size={20} />
 
-            <span className="absolute -top-2 left-4 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              8
-            </span>
+          
 
             <span>Cart</span>
           </Link>
 
           {/* USER PROFILE */}
           <div className="relative">
-
             <button
               onClick={() => setProfileOpen(!profileOpen)}
               className="relative cursor-pointer"
@@ -175,7 +167,6 @@ export function Navbar({ onSearch }) {
             {/* PROFILE DROPDOWN */}
             {profileOpen && (
               <div className="absolute right-0 top-10 w-64 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden">
-
                 {/* USER INFO */}
                 <div className="px-4 py-4 bg-gray-50 border-b">
                   <p className="font-semibold text-gray-900">
@@ -209,14 +200,7 @@ export function Navbar({ onSearch }) {
                   </Link>
                 )}
 
-                {/* SETTINGS */}
-                <button
-                  className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100 text-left"
-                  onClick={() => setProfileOpen(false)}
-                >
-                  <FiSettings size={18} />
-                  <span>Settings</span>
-                </button>
+             
 
                 {/* LOGOUT */}
                 <button
@@ -233,22 +217,16 @@ export function Navbar({ onSearch }) {
 
         {/* ================= MOBILE ================= */}
         <div className="flex md:hidden gap-5">
-
           {/* MOBILE CART */}
           <Link
             to="/cart"
             className="relative flex items-center cursor-pointer"
           >
             <FiShoppingCart size={24} />
-
-            <span className="absolute -top-2 -right-3 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              8
-            </span>
           </Link>
 
           {/* MOBILE USER */}
           <div className="relative">
-
             <button
               onClick={() => setProfileOpen(!profileOpen)}
               className="cursor-pointer"
@@ -258,13 +236,10 @@ export function Navbar({ onSearch }) {
 
             {/* MOBILE DROPDOWN */}
             {profileOpen && (
-              <div className="absolute right-0 top-9 w-60 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden">
-
+              <div className="absolute right-0 top-12 z-[100] w-60 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden">
                 {/* USER INFO */}
                 <div className="px-4 py-4 bg-gray-50 border-b">
-                  <p className="font-semibold">
-                    {user?.name || "User"}
-                  </p>
+                  <p className="font-semibold">{user?.name || "User"}</p>
 
                   <p className="text-sm text-gray-500 truncate">
                     {user?.email}
@@ -293,13 +268,13 @@ export function Navbar({ onSearch }) {
                   </Link>
                 )}
 
-                {/* SETTINGS */}
+                {/* my order */}
                 <button
                   onClick={() => setProfileOpen(false)}
                   className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100 text-left"
                 >
-                  <FiSettings size={18} />
-                  Settings
+                  <FiPackage size={18} />
+                  My Orders
                 </button>
 
                 {/* LOGOUT */}

@@ -46,6 +46,7 @@ import { SearchPage } from "./pages/SearchPage";
 import { CategoryProductPage } from "./pages/CategoryProductPage";
 import { ProtectedRoute } from "./pages/ProtectedRoute";
 import { AdminRoute } from "./pages/AdminRoute";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -146,7 +147,11 @@ function App() {
           </AdminRoute>
         }
       />
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
+
+    
   );
 }
 

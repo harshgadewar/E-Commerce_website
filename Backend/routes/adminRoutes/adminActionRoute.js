@@ -6,7 +6,7 @@ import {
   adminviewallProduct,
   update,
   deleteProduct,
-  getProductById,
+  getProductById,updateOrderStatus,
 } from "../../controllers/Admin/adminAction.js";
 import { getAdminDashboard } from "../../controllers/Admin/admindashboard.js";
 import { isadmin } from "../../middleware/isAdminMiddleware.js";
@@ -44,5 +44,7 @@ router.get(
 );
 router.put("/updateproduct/:id", authMiddleware, isadmin, upload.single("image"),update);
 router.delete("/deleteproduct/:id", authMiddleware, isadmin, deleteProduct);
+
+router.patch("/orders/:id/status", updateOrderStatus);
 
 export default router;

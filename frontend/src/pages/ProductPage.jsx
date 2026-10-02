@@ -1,7 +1,5 @@
-
-
 import { Navbar } from "../components/Navbar";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -15,12 +13,15 @@ import {
   Zap,
   Check,
 } from "lucide-react";
+import { Footer } from "../components/Footer";
 
 export function ProductPage() {
   const [product, setProduct] = useState({});
   const [liked, setLiked] = useState(false);
 
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -38,27 +39,64 @@ export function ProductPage() {
     fetchProduct();
   }, [id]);
 
-  const addToCart = async () => {
-    try {
-      await axios.post(
-        `http://localhost:8080/useraction/addtocart/${product._id}`,
-        {
-          quantity: 1,
-        },
-        { withCredentials: true },
-      );
+ 
+const addToCart = async () => {
+  try {
+    if (product.stockQuantity <= 0) {
+      alert("Product is out of stock!");
+      return;
+    }
 
-      alert("Added to cart!");
+    const res = await axios.post(
+      `http://localhost:8080/useraction/addtocart/${product._id}`,
+      {
+        quantity: 1,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    console.log("Add to Cart response:", res.data);
+
+    alert("Added to cart!");
+  } catch (e) {
+    console.log("Add to Cart Error:", e);
+    console.log("Server response:", e.response?.data);
+
+    alert(
+      e.response?.data?.message ||
+      e.message ||
+      "Failed to add product to cart"
+    );
+  }
+};
+
+
+  const buyNow = () => {
+    try {
+      if (product.stockQuantity <= 0) {
+        alert("Product is out of stock!");
+        return;
+      }
+
+      navigate("/payment", {
+        state: {
+          buyNow: true,
+          product: product,
+          quantity: 1,
+          totalPrice: product.price,
+        },
+      });
     } catch (e) {
-      console.log(e);
+      console.log("Buy Now Error:", e);
     }
   };
-
   return (
     <div className="min-h-screen bg-[#f7f8fa]">
       <Navbar />
 
-      <main className="max-w-7xl mx-auto px-4 md:px-6 py-8 mt-6">
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-8 mt-37 md:mt-7 mb-30">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
           <Link to="/" className="hover:text-black transition">
@@ -75,11 +113,13 @@ export function ProductPage() {
           {/* ================= IMAGE SECTION ================= */}
           <div className="relative">
             {/* Image Card */}
-            <div className="bg-white   p-6 md:p-10 ">
+            <div className="bg-white   p-2 md:p-10 ">
               {/* Top badges */}
               <div className="flex justify-between items-center mb-6">
-                <span className="bg-green-50 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold">
-                  ✓ In Stock
+                <span
+                  className={`${product.stockQuantity > 0 ? "bg-green-50 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold" : "bg-red-100 text-red-700 px-3 py-1.5 rounded-full text-xs font-semibold"}`}
+                >
+                  {product.stockQuantity > 0 ? "In Stock" : "Out of stock"}
                 </span>
 
                 <button
@@ -96,42 +136,29 @@ export function ProductPage() {
               </div>
 
               {/* Product Image */}
-              <div className="h-[450px] md:h-[520px] flex items-center justify-center  bg-[#f5f6f8]">
+              <div className="h-[310px] md:h-[420px] flex items-center justify-center  bg-[#f5f6f8]">
                 <img
                   src={product.image}
                   alt={product.title}
                   className="w-full h-full max-w-[520px] object-contain p-8 hover:scale-105 transition duration-500"
                 />
               </div>
-
-              {/* Small trust text */}
-              <div className="flex justify-center gap-8 mt-6 text-sm text-gray-500">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck size={18} className="text-green-600" />
-                  Secure Product
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <Truck size={18} className="text-blue-600" />
-                  Fast Delivery
-                </div>
-              </div>
             </div>
           </div>
 
           {/* ================= PRODUCT DETAILS ================= */}
-          <div className="bg-white   p-6 md:p-8 ">
-            {/* Brand */}
+          <div className="bg-white   py-2 md:p-8 ">
+           
             <div className="text-sm font-semibold text-blue-600 mb-3">
               VELORA
             </div>
 
-            {/* Title */}
+            
             <h1 className="text-2xl md:text-2xl font-semibold tracking-tight text-gray-900 leading-tight">
               {product.title}
             </h1>
 
-            {/* Rating */}
+       
             <div className="flex items-center gap-3 mt-5">
               <div className="flex items-center gap-1 bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold">
                 4.6
@@ -145,10 +172,10 @@ export function ProductPage() {
               <span className="text-gray-500 text-sm">54 Reviews</span>
             </div>
 
-            {/* Divider */}
+            
             <div className="border-t border-gray-100 my-6" />
 
-            {/* PRICE */}
+           
             <div>
               <div className="flex items-end gap-4">
                 <span className="text-4xl font-bold text-gray-900">
@@ -156,7 +183,7 @@ export function ProductPage() {
                 </span>
 
                 <span className="text-lg text-gray-400 line-through mb-1">
-                  ₹1,09,000
+                  ₹{Math.round(product.price / (1 - 11 / 100))}
                 </span>
 
                 <span className="text-green-600 font-bold mb-1">11% OFF</span>
@@ -167,7 +194,7 @@ export function ProductPage() {
               </p>
             </div>
 
-            {/* OFFER */}
+           
             <div className="mt-6 rounded-2xl bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-100 p-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-orange-500 text-white flex items-center justify-center">
@@ -184,7 +211,7 @@ export function ProductPage() {
               </div>
             </div>
 
-            {/* ACTION BUTTONS */}
+            
             <div className="grid grid-cols-2 gap-4 mt-7">
               <button
                 onClick={addToCart}
@@ -194,16 +221,17 @@ export function ProductPage() {
                 Add to Cart
               </button>
 
-              <Link
-                to="/payment" onClick={addToCart}
+              <button
+                type="button"
+                onClick={buyNow}
                 className="h-14 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-orange-200"
               >
-                <Zap size={20} fill="currentColor" />
+                
                 Buy Now
-              </Link>
+              </button>
             </div>
 
-            {/* BENEFITS */}
+            
             <div className="mt-8 border border-gray-200 rounded-2xl overflow-hidden">
               <Benefit
                 icon={<Truck size={21} />}
@@ -278,6 +306,7 @@ export function ProductPage() {
           />
         </section>
       </main>
+      <Footer/>
     </div>
   );
 }

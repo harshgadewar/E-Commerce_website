@@ -1,7 +1,7 @@
 import { productModel } from "../../models/product.js";
 import { orderModel } from "../../models/orderModel.js";
 
-export const buyProduct = async (req, res) => {
+export const buyProductfromcart = async (req, res) => {
   try {
     let { paymentMethod, shippingAddress, quantity } = req.body;
     let productId = req.params.id;
@@ -78,4 +78,68 @@ export const buyProduct = async (req, res) => {
       .status(500)
       .json({ success: false, message: "internal server error " });
   }
+};
+
+
+export const buyNow = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const { quantity } = req.body;
+
+    // Check login
+    let user = req.user._id;
+    if (!user) {
+      return res.status(400).json({ message: "please login!!" });
+    }
+
+    // Validate quantity
+    if (
+      typeof quantity !== "number" ||
+      quantity <= 0 ||
+      !Number.isInteger(quantity)
+    ) {
+      return res.status(400).json({
+        message: "Quantity must be a positive integer",
+      });
+    }
+
+    const product = await productModel.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+
+    if (product.stockQuantity <= 0) {
+      return res.status(400).json({
+        message: "Product is out of stock",
+      });
+    }
+
+    if (quantity > product.stockQuantity) {
+      return res.status(400).json({
+        message: `Only ${product.stockQuantity} items available`,
+      });
+    }
+
+    const totalPrice = product.price * quantity;
+
+    return res.status(200).json({
+      message: "Buy Now data fetched successfully",
+
+      product: {
+        _id: product._id,
+        title: product.title,
+        price: product.price,
+        image: product.image,
+      },
+
+      quantity,
+      totalPrice,
+    });
+  } catch (e) {
+  console.log("Buy Now Error:", e);
+  console.log("Server response:", e.response?.data);
+}
 };

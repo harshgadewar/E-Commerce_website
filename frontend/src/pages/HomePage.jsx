@@ -3,7 +3,7 @@ import { Navbar } from "../components/Navbar";
 import { ProductCard } from "../components/ProductCard";
 import { SearchBar } from "../components/SearchBar";
 import { Loading } from "../components/Loading";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Footer } from "../components/Footer";
 
@@ -13,6 +13,18 @@ export function HomePage() {
   const [search, setSearch] = useState("");
   const [searching, setSearching] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const trendingRef = useRef(null);
+  const electronicsRef = useRef(null);
+
+  const scrollCarousel = (ref, direction) => {
+    if (!ref.current) return;
+
+    ref.current.scrollBy({
+      left: direction === "right" ? 500 : -500,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,10 +109,43 @@ export function HomePage() {
           <button>View All →</button>
         </div>
 
-        <div className="flex overflow-x-auto gap-4 mt-4 scrollbar-hide">
+        {/* <div className="flex overflow-x-auto gap-4 mt-4 scrollbar-hide">
           {products.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}
+        </div> */}
+
+        <div className="relative mt-4">
+          <div
+            ref={trendingRef}
+            className="flex overflow-x-auto gap-4 scrollbar-hide scroll-smooth"
+          >
+            {products.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+
+          {/* Left Arrow */}
+          <button
+            onClick={() => scrollCarousel(trendingRef, "left")}
+            className="absolute left-2 top-1/2 -translate-y-1/2
+               w-10 h-10 rounded-full bg-white shadow-lg border
+               flex items-center justify-center
+               text-xl font-bold hover:bg-gray-100 z-10"
+          >
+            ←
+          </button>
+
+          {/* Right Arrow */}
+          <button
+            onClick={() => scrollCarousel(trendingRef, "right")}
+            className="absolute right-2 top-1/2 -translate-y-1/2
+               w-10 h-10 rounded-full bg-white shadow-lg border
+               flex items-center justify-center
+               text-xl font-bold hover:bg-gray-100 z-10"
+          >
+            →
+          </button>
         </div>
       </div>
 
@@ -113,10 +158,42 @@ export function HomePage() {
           <button>View All →</button>
         </div>
 
-        <div className="flex overflow-x-auto gap-4 mt-4 scrollbar-hide">
+        {/* <div className="flex overflow-x-auto gap-4 mt-4 scrollbar-hide">
           {electronics.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}
+        </div> */}
+        <div className="relative mt-4">
+          <div
+            ref={electronicsRef}
+            className="flex overflow-x-auto gap-4 scrollbar-hide scroll-smooth"
+          >
+            {electronics.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+
+          {/* Left Arrow */}
+          <button
+            onClick={() => scrollCarousel(electronicsRef, "left")}
+            className="absolute left-2 top-1/2 -translate-y-1/2
+               w-10 h-10 rounded-full bg-white shadow-lg border
+               flex items-center justify-center
+               text-xl font-bold hover:bg-gray-100 z-10 "
+          >
+            ←
+          </button>
+
+          {/* Right Arrow */}
+          <button
+            onClick={() => scrollCarousel(electronicsRef, "right")}
+            className="absolute right-2 top-1/2 -translate-y-1/2
+               w-10 h-10 rounded-full bg-white shadow-lg border
+               flex items-center justify-center
+               text-xl font-bold hover:bg-gray-100 z-10 "
+          >
+            →
+          </button>
         </div>
       </div>
 
@@ -131,7 +208,7 @@ export function HomePage() {
 
         <div
           className="grid
-          grid-cols-3
+          grid-cols-2
           sm:grid-cols-2
           md:grid-cols-3
           lg:grid-cols-8

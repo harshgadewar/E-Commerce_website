@@ -5,74 +5,80 @@ import axios from "axios";
 import { Loading } from "../components/Loading";
 import { Link } from "react-router-dom";
 
-const increaseQuantity = async (cartId) => {
-  try {
-    await axios.patch(
-      `http://localhost:8080/useraction/cart/${cartId}/increase`,
-      {},
-      {
-        withCredentials: true,
-      },
-    );
-
-    fetchCart();
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const decreaseQuantity = async (cartId) => {
-  try {
-    await axios.patch(
-      `http://localhost:8080/useraction/cart/${cartId}/decrease`,
-      {},
-      {
-        withCredentials: true,
-      },
-    );
-
-    fetchCart();
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 export function AddtoCart() {
   const [carts, setCart] = useState([]);
   const [checkoutdata, setCheckout] = useState({});
   const [loading, setLoading] = useState(true);
 
+  const fetchCart = async () => {
+    try {
+      setLoading(true);
+
+      const res1 = await axios.get(
+        "http://localhost:8080/useraction/viewcart",
+        { withCredentials: true },
+      );
+
+      let res2 = await axios.get(
+        `http://localhost:8080/useraction/cart/checkout`,
+
+        {
+          withCredentials: true,
+        },
+      );
+
+      setCart(res1.data.cart);
+      setCheckout(res2.data);
+    } catch (e) {
+      console.log(e.response);
+      console.log(e.response?.data);
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchcart = async () => {
-      try {
-        setLoading(true);
-
-        const res1 = await axios.get(
-          "http://localhost:8080/useraction/viewcart",
-          { withCredentials: true },
-        );
-
-        let res2 = await axios.get(
-          `http://localhost:8080/useraction/cart/checkout`,
-
-          {
-            withCredentials: true,
-          },
-        );
-
-        setCart(res1.data.cart);
-        setCheckout(res2.data);
-      } catch (e) {
-        console.log(e.response);
-        console.log(e.response?.data);
-        console.log(e);
-      } finally {
-        setLoading(false);
-      }
+    const loadCart = async () => {
+      setLoading(true);
+      await fetchCart();
+      setLoading(false);
     };
 
-    fetchcart();
+    loadCart();
   }, []);
+
+  const increaseQuantity = async (cartId) => {
+    try {
+      await axios.patch(
+        `http://localhost:8080/useraction/cart/${cartId}/increase`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+
+      await fetchCart();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const decreaseQuantity = async (cartId) => {
+    try {
+      await axios.patch(
+        `http://localhost:8080/useraction/cart/${cartId}/decrease`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+
+      await fetchCart();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   if (loading) {
     return <Loading />;
