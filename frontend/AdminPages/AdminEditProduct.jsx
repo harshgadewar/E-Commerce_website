@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { AdminNavbar } from "./Components/AdminNavbar";
+import { api } from "../src/api/axios";
 
 export function AdminEditProduct() {
   const { id } = useParams();
@@ -17,14 +17,14 @@ export function AdminEditProduct() {
 
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const [loading, setLoading] = useState(true);
+ 
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:8080/admin/product/${id}`,
+        const res = await api.get(
+          `/admin/product/${id}`,
           {
             withCredentials: true,
           },
@@ -34,9 +34,7 @@ export function AdminEditProduct() {
       } catch (e) {
         console.log(e);
         alert("Failed to load product");
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     fetchProduct();
@@ -77,8 +75,8 @@ export function AdminEditProduct() {
         formData.append("image", selectedImage);
       }
 
-      await axios.put(
-        `http://localhost:8080/admin/updateproduct/${id}`,
+      await api.put(
+        `/admin/updateproduct/${id}`,
         formData,
         {
           withCredentials: true,
@@ -92,22 +90,10 @@ export function AdminEditProduct() {
       console.log(e);
 
       alert(e.response?.data?.message || "Failed to update product");
-    } finally {
-      setSaving(false);
-    }
+    } 
   };
 
-  if (loading) {
-    return (
-      <>
-        <AdminNavbar />
-
-        <div className="min-h-screen flex justify-center items-center">
-          <p className="text-gray-500">Loading product...</p>
-        </div>
-      </>
-    );
-  }
+ 
 
   return (
     <>

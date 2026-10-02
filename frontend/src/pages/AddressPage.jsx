@@ -2,6 +2,7 @@ import { Navbar } from "../components/Navbar";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Footer } from "../components/Footer";
 
 export function AddressTakingPage() {
   const [address, setAddress] = useState({
@@ -51,7 +52,7 @@ export function AddressTakingPage() {
     <div>
       <Navbar />
 
-      <div className="max-w-3xl mx-auto mt-8">
+      <div className="max-w-3xl mx-auto mt-27 mb-50">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Address</h1>
         <div className="bg-white  shadow-md rounded-lg p-6">
           <form onSubmit={handleSubmit}>
@@ -122,6 +123,7 @@ export function AddressTakingPage() {
           </form>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

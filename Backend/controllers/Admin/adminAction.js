@@ -1,6 +1,7 @@
 import { productModel } from "../../models/product.js";
 import cloudinary from "../../config/cloudnary.js";
 import { sellerModel } from "../../models/sellerModel.js";
+import { orderModel } from "../../models/orderModel.js";
 
 //add product
 
@@ -219,5 +220,53 @@ export const deleteProduct = async (req, res) => {
     return res.status(200).json({ message: "product deleted" });
   } catch (e) {
     return res.status(500).json({ error: e.message });
+  }
+};
+
+
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const allowedStatuses = [
+      "placed",
+      "arriving",
+      "delivered",
+      "cancelled",
+    ];
+
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid order status",
+      });
+    }
+
+    const order = await orderModel.findById(id);
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    order.status = status;
+
+    await order.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Order status updated successfully",
+      order,
+    });
+  } catch (error) {
+    console.error("Update order status error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update order status",
+    });
   }
 };

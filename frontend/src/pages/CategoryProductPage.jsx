@@ -5,6 +5,7 @@ import axios from "axios";
 import { Navbar } from "../components/Navbar";
 import { CategoryBar } from "../components/CategoryBar";
 import { ProductCard } from "../components/ProductCard";
+import { Footer } from "../components/Footer";
 
 export function CategoryProductPage() {
   const { category } = useParams();
@@ -41,11 +42,11 @@ export function CategoryProductPage() {
     <>
       <Navbar />
 
-      <div className="sticky top-20 z-40 bg-white">
+      <div className="mt-[151px] md:mt-20 sticky top-[151px] md:top-20 z-40 bg-white ">
         <CategoryBar />
       </div>
 
-      <div className="min-h-screen bg-slate-50 py-8 mt-10 pt-10">
+      <div className="min-h-screen bg-slate-50 py-8  mb-20">
         <div className="max-w-7xl mx-auto px-4">
           {/* Header */}
 
@@ -103,6 +104,7 @@ export function CategoryProductPage() {
           )}
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

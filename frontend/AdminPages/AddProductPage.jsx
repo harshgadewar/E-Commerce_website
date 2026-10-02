@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { AdminNavbar } from "./Components/AdminNavbar";
+import { api } from "../src/api/axios";
 
 export function AddProductPage() {
   const [product, setProduct] = useState({
@@ -12,7 +13,6 @@ export function AddProductPage() {
 
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   // Handle text inputs
   const handleChange = (e) => {
@@ -43,8 +43,6 @@ export function AddProductPage() {
     }
 
     try {
-      setLoading(true);
-
       const formData = new FormData();
 
       formData.append("title", product.title);
@@ -54,8 +52,8 @@ export function AddProductPage() {
       formData.append("category", product.category);
       formData.append("image", image);
 
-      const res = await axios.post(
-        "http://localhost:8080/admin/addproduct",
+      const res = await api.post(
+        "/admin/addproduct",
         formData,
         {
           withCredentials: true,
@@ -80,8 +78,6 @@ export function AddProductPage() {
       console.error(error);
 
       alert(error.response?.data?.message || "Something went wrong");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -113,7 +109,6 @@ export function AddProductPage() {
                 required
               />
             </div>
-
             {/* Description */}
             <div className="mb-5">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -130,7 +125,6 @@ export function AddProductPage() {
                 required
               />
             </div>
-
             {/* Price + Stock */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
               <div>
@@ -167,7 +161,6 @@ export function AddProductPage() {
                 />
               </div>
             </div>
-
             {/* Image */}
             <div className="mb-6">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -182,7 +175,6 @@ export function AddProductPage() {
                 required
               />
             </div>
-
             <div className="mb-6">
               <select
                 name="category"
@@ -203,8 +195,6 @@ export function AddProductPage() {
               </select>
             </div>
             "",
-    
-
             {/* Image Preview */}
             {preview && (
               <div className="mb-6">
@@ -221,14 +211,13 @@ export function AddProductPage() {
                 </div>
               </div>
             )}
-
             {/* Submit */}
             <button
               type="submit"
-              disabled={loading}
+             
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition"
             >
-              {loading ? "Adding Product..." : "Add Product"}
+              Add Product
             </button>
           </form>
         </div>
