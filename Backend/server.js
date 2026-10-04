@@ -40,9 +40,14 @@ app.use(limiter);
 
 //---------------------------------------CORS--------------------------------------------------------
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://e-commerce-website-26ie.vercel.app/",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
     credentials: true,
   })
 );
