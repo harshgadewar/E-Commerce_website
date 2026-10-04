@@ -17,7 +17,7 @@ export function AdminNavbar() {
         {/* =========================
             LOGO
         ========================= */}
-        <Link to="/adminallproduct" className="flex items-center">
+        <Link to="/admindashboard" className="flex items-center">
           <img src={logo} alt="Velora" className="h-11 w-auto sm:h-12" />
         </Link>
 

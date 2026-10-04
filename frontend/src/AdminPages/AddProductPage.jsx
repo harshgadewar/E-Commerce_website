@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AdminNavbar } from "./Components/AdminNavbar";
+import { AdminNavbar } from "./Components/AdminNavbar"; 
 import { api } from "../api/axios";
 
 export function AddProductPage() {
