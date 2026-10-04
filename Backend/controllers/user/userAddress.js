@@ -32,7 +32,7 @@ export const adduseraddress = async (req, res) => {
     });
 
     await newaddress.save();
-    console.log("address savedd conolse one");
+
     return res.status(200).json({ message: "Address saved!!!!!" });
   } catch (err) {
     console.log(err);
@@ -62,6 +62,74 @@ export const getUserAddress = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const editUserAddress = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const {
+      firstname,
+      lastname,
+      phoneno,
+      address,
+      pincode,
+      city,
+      state,
+    } = req.body;
+
+    if (
+      !firstname ||
+      !lastname ||
+      !phoneno ||
+      !address ||
+      !pincode ||
+      !city ||
+      !state
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    const updatedAddress = await addressModel.findOneAndUpdate(
+      { userId },
+      {
+        firstname,
+        lastname,
+        phoneno,
+        address,
+        pincode,
+        city,
+        state,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!updatedAddress) {
+      return res.status(404).json({
+        success: false,
+        message: "Address not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Address updated successfully",
+      address: updatedAddress,
+    });
+  } catch (err) {
+    console.log(err);
+
     return res.status(500).json({
       success: false,
       message: err.message,

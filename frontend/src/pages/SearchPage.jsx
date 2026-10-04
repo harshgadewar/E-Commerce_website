@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import axios from "axios";
+import { api } from "../api/axios";
 
 import { Navbar } from "../components/Navbar";
 import { ProductCard } from "../components/ProductCard";
@@ -11,27 +11,18 @@ export function SearchPage() {
   const query = searchParams.get("q") || "";
 
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const searchProducts = async () => {
       try {
-        setLoading(true);
-
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/useraction/search?q=${encodeURIComponent(
-            query,
-          )}`,
+        const res = await api.get(
+          `/useraction/search?q=${encodeURIComponent(query)}`,
         );
-
-        console.log("Search results:", res.data);
 
         setProducts(res.data);
       } catch (err) {
         console.log(err);
         setProducts([]);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -39,7 +30,6 @@ export function SearchPage() {
       searchProducts();
     } else {
       setProducts([]);
-      setLoading(false);
     }
   }, [query]);
 
@@ -49,7 +39,6 @@ export function SearchPage() {
 
       <div className="min-h-screen bg-slate-50 py-8 md:mt-20 mt-35">
         <div className="max-w-7xl mx-auto px-4">
-          {/* Heading */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900">Search Results</h1>
 
@@ -59,15 +48,17 @@ export function SearchPage() {
             </p>
           </div>
 
-          {/* Loading */}
-          {loading && (
-            <div className="text-center py-20">
-              <p className="text-gray-500">Searching products...</p>
-            </div>
-          )}
+          {!query.trim() ? (
+            <div className="bg-white rounded-xl shadow-sm p-12 text-center">
+              <h2 className="text-2xl font-semibold text-gray-800">
+                Search for a product
+              </h2>
 
-          {/* No products */}
-          {!loading && products.length === 0 && (
+              <p className="text-gray-500 mt-2">
+                Enter a product name to start searching.
+              </p>
+            </div>
+          ) : products.length === 0 ? (
             <div className="bg-white rounded-xl shadow-sm p-12 text-center">
               <h2 className="text-2xl font-semibold text-gray-800">
                 No products found
@@ -77,10 +68,7 @@ export function SearchPage() {
                 Try searching for something else.
               </p>
             </div>
-          )}
-
-          {/* Products */}
-          {!loading && products.length > 0 && (
+          ) : (
             <div
               className="
                 grid

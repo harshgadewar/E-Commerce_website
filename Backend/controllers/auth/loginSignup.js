@@ -12,7 +12,7 @@ export const signup = async (req, res) => {
 
   try {
     const existingUser = await userModel.findOne({ email });
-    console.log(existingUser);
+
 
     if (existingUser) {
       return res.status(302).json({ message: "User already exists" });
@@ -60,14 +60,22 @@ export let login = async (req, res) => {
 
     const refreshToken = generateRefreshToken(user._id);
 
+    
+
     await redisClient.set(refreshToken, user._id.toString(), {
       EX: 7 * 24 * 60 * 60, //refresh token set in redis
     });
 
     const acessToken = generateAccessTokenutil(user._id);
 
+    // res.cookie("refreshToken", refreshToken, {
+    //   httpOnly: true,
+    // });
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.cookie("accessToken", acessToken, {
@@ -77,13 +85,14 @@ export let login = async (req, res) => {
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
-    console.log(acessToken);
+    
     return res.status(200).json({
       success: true,
       message: "Login successful",
     });
   } catch (err) {
     console.error(err);
+    
     return res.status(500).json({ message: "internal server error" });
   }
 };

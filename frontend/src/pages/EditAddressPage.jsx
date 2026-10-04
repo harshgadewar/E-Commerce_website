@@ -1,12 +1,10 @@
 import { Navbar } from "../components/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { api } from "../api/axios";
 
-
-
-export function AddressTakingPage() {
+export function EditAddressPage() {
   const [address, setAddress] = useState({
     firstname: "",
     lastname: "",
@@ -19,7 +17,39 @@ export function AddressTakingPage() {
 
   const navigate = useNavigate();
 
- 
+  // ================= GET EXISTING ADDRESS =================
+
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        const res = await api.get(
+          `${import.meta.env.VITE_API_URL}/useraction/getaddress`,
+          {
+            withCredentials: true,
+          },
+        );
+
+        setAddress({
+          firstname: res.data.address.firstname || "",
+          lastname: res.data.address.lastname || "",
+          phoneno: res.data.address.phoneno || "",
+          address: res.data.address.address || "",
+          pincode: res.data.address.pincode || "",
+          city: res.data.address.city || "",
+          state: res.data.address.state || "",
+        });
+      } catch (e) {
+        console.log("Get address error:", e);
+        console.log(e.response);
+
+        alert(e.response?.data?.message || "Failed to load address");
+      }
+    };
+
+    fetchAddress();
+  }, []);
+
+  // ================= HANDLE CHANGE =================
 
   const handleChange = (e) => {
     setAddress({
@@ -28,27 +58,29 @@ export function AddressTakingPage() {
     });
   };
 
+  // ================= UPDATE ADDRESS =================
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-    
-      const res = api.post(
-        `${import.meta.env.VITE_API_URL}/useraction/saveaddress`,
-        
-          address,
-        
+      const res = await api.put(
+        `${import.meta.env.VITE_API_URL}/useraction/editaddress`,
+        address,
         {
           withCredentials: true,
         },
       );
-      alert("address saved!!");
+
+      console.log("Address updated:", res.data);
+
+      alert("Address updated successfully!!");
 
       navigate("/payment");
     } catch (e) {
-      console.log(e);
+      console.log("Edit address error:", e);
       console.log(e.response);
-      console.log(e.message);
+
       alert(e.response?.data?.message || "Something went wrong");
     }
   };
@@ -58,8 +90,9 @@ export function AddressTakingPage() {
       <Navbar />
 
       <div className="max-w-3xl mx-auto mt-27 mb-50">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Address</h1>
-        <div className="bg-white  shadow-md rounded-lg p-6">
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">Edit Address</h1>
+
+        <div className="bg-white shadow-md rounded-lg p-6">
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
@@ -69,66 +102,91 @@ export function AddressTakingPage() {
                 className="border rounded p-2"
                 value={address.firstname}
                 onChange={handleChange}
+                required
               />
+
               <input
                 type="text"
                 name="lastname"
-                placeholder="lastname"
+                placeholder="Last Name"
                 className="border rounded p-2"
                 value={address.lastname}
                 onChange={handleChange}
+                required
               />
+
               <input
                 type="text"
                 name="phoneno"
-                placeholder="phonenumber"
+                placeholder="Phone Number"
                 className="border rounded p-2"
                 value={address.phoneno}
                 onChange={handleChange}
+                required
               />
+
               <input
                 type="text"
                 name="address"
-                placeholder="address"
+                placeholder="Address"
                 className="border rounded p-2"
                 value={address.address}
                 onChange={handleChange}
+                required
               />
+
               <input
                 type="text"
                 name="pincode"
-                placeholder="pincode"
+                placeholder="Pincode"
                 className="border rounded p-2"
                 value={address.pincode}
                 onChange={handleChange}
+                required
               />
+
               <input
                 type="text"
                 name="city"
-                placeholder="city"
+                placeholder="City"
                 className="border rounded p-2"
                 value={address.city}
                 onChange={handleChange}
+                required
               />
+
               <input
                 type="text"
                 name="state"
-                placeholder="state"
+                placeholder="State"
                 className="border rounded p-2"
                 value={address.state}
                 onChange={handleChange}
+                required
               />
             </div>
-            <button
-              type="submit"
-              className="mt-6 bg-blue-600 text-white px-6 py-2 rounded "
-            >
-              Save Address
-            </button>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="border border-gray-300 px-6 py-2 rounded hover:bg-gray-100"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Update Address
+              </button>
+            </div>
           </form>
         </div>
       </div>
-      <Footer/>
+
+      <Footer />
     </div>
   );
 }

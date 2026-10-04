@@ -15,7 +15,7 @@ export function AdminRoute({ children }) {
 
   // Logged in but not admin
   if (user.role !== "admin") {
-    alert("This page is for admin only!");
+    alert("This page is for admin only! use admin@gmail.com to access admin page password- admin");
 
     return <Navigate to="/" replace />;
   }

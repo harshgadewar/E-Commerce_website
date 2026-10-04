@@ -1,12 +1,12 @@
-
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Loading } from "../components/Loading";
 
 export function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!user) {

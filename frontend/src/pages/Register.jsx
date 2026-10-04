@@ -1,10 +1,13 @@
 import { useState } from "react";
-import axios from "axios";
+import { api } from "../api/axios";
 import { useNavigate, Link } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { useLoading } from "../context/LoadingContext";
 
 function Register() {
   const navigate = useNavigate();
+  
+
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,9 +19,9 @@ function Register() {
     e.preventDefault();
 
     try {
-      setLoading(true);
+       
 
-      const res = await axios.post(
+      const res = await api.post(
         `${import.meta.env.VITE_API_URL}/signup`,
         {
           name,
@@ -39,9 +42,7 @@ function Register() {
         err.response?.data?.message ||
           "Something went wrong"
       );
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   return (

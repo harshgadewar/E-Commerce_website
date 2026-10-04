@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { api } from "../api/axios";
+
 import { Navbar } from "../components/Navbar";
 
 export function MyOrder() {
@@ -8,15 +9,15 @@ export function MyOrder() {
   useEffect(() => {
     const fetchorder = async () => {
       try {
-        const res = await axios.get(
+        const res = await api.get(
           `${import.meta.env.VITE_API_URL}/useraction/myorders`,
           {
             withCredentials: true,
           },
         );
-        console.log(res.data.data);
+      
         setOrders(res.data.data);
-      } catch (e) {
+      }catch(e){
         console.log(e);
       }
     };

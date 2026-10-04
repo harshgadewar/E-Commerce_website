@@ -18,7 +18,7 @@ export const getAdminDashboard = async (req, res) => {
         .populate("products.productId", "title price image"),
     ]);
 
-    console.log(products);
+    
     return res.status(200).json({
       success: true,
       dashboard: {

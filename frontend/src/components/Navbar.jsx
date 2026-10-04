@@ -1,4 +1,3 @@
-
 import {
   FiSearch,
   FiShoppingCart,
@@ -6,6 +5,7 @@ import {
   FiLogOut,
   FiPackage,
   FiSettings,
+  FiUserPlus,
   FiShield,
 } from "react-icons/fi";
 
@@ -59,13 +59,24 @@ export function Navbar({ onSearch }) {
         {/* ================= DESKTOP RIGHT SECTION ================= */}
         <div className="hidden md:flex items-center gap-10">
           {/* MY ORDERS */}
-          <Link
-            to="/myorder"
-            className="flex items-center gap-2 cursor-pointer hover:text-gray-600"
-          >
-            <FiPackage size={20} />
-            <span>MyOrders</span>
-          </Link>
+          {/* MY ORDERS / LOGIN */}
+          {user ? (
+            <Link
+              to="/myorder"
+              className="flex items-center gap-2 cursor-pointer hover:text-gray-600"
+            >
+              <FiPackage size={20} />
+              <span>MyOrders</span>
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              className="flex items-center gap-2 cursor-pointer hover:text-gray-600"
+            >
+              <FiUser size={20} />
+              <span>Login</span>
+            </Link>
+          )}
 
           {/* CART */}
           <Link
@@ -73,8 +84,6 @@ export function Navbar({ onSearch }) {
             className="relative flex items-center gap-2 cursor-pointer hover:text-gray-600"
           >
             <FiShoppingCart size={20} />
-
-          
 
             <span>Cart</span>
           </Link>
@@ -113,18 +122,23 @@ export function Navbar({ onSearch }) {
                 </Link>
 
                 {/* ADMIN PANEL */}
-                {user?.role === "admin" && (
-                  <Link
-                    to="/admindashboard"
-                    onClick={() => setProfileOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-                  >
-                    <FiShield size={18} />
-                    <span>Admin Panel</span>
-                  </Link>
-                )}
 
-             
+                <Link
+                  to="/admindashboard"
+                  onClick={() => setProfileOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                >
+                  <FiShield size={18} />
+                  <span>Admin Panel</span>
+                </Link>
+
+                <Link
+                  to="/register"
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                >
+                  <FiUserPlus size={20} />
+                  Register
+                </Link>
 
                 {/* LOGOUT */}
                 <button
@@ -181,7 +195,7 @@ export function Navbar({ onSearch }) {
                 </Link>
 
                 {/* ADMIN */}
-                {user?.role === "admin" && (
+                
                   <Link
                     to="/admindashboard"
                     onClick={() => setProfileOpen(false)}
@@ -190,16 +204,32 @@ export function Navbar({ onSearch }) {
                     <FiShield size={18} />
                     Admin Panel
                   </Link>
-                )}
+                
 
                 {/* my order */}
-                <button
+                <Link
+                  to="/cart"
                   onClick={() => setProfileOpen(false)}
-                  className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100 text-left"
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                 >
-                  <FiPackage size={18} />
-                  My Orders
-                </button>
+                  <FiShoppingCart size={24} />
+                  Cart
+                </Link>
+                <Link
+                  to="/login"
+                  onClick={() => setProfileOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                >
+                  <FiUser size={22} />
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                >
+                  <FiUserPlus size={20} />
+                  Register
+                </Link>
 
                 {/* LOGOUT */}
                 <button

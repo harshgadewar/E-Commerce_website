@@ -1,7 +1,8 @@
 import { Navbar } from "../components/Navbar";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { api } from "../api/axios";
+
 import {
   Truck,
   ShieldCheck,
@@ -26,7 +27,7 @@ export function ProductPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(
+        const res = await api.get(
           `${import.meta.env.VITE_API_URL}/useraction/viewproduct/${id}`,
         );
 
@@ -39,40 +40,32 @@ export function ProductPage() {
     fetchProduct();
   }, [id]);
 
- 
-const addToCart = async () => {
-  try {
-    if (product.stockQuantity <= 0) {
-      alert("Product is out of stock!");
-      return;
-    }
-
-    const res = await axios.post(
-      `${import.meta.env.VITE_API_URL}/useraction/addtocart/${product._id}`,
-      {
-        quantity: 1,
-      },
-      {
-        withCredentials: true,
+  const addToCart = async () => {
+    try {
+      if (product.stockQuantity <= 0) {
+        alert("Product is out of stock!");
+        return;
       }
-    );
 
-    console.log("Add to Cart response:", res.data);
+      const res = await api.post(`/useraction/addtocart/${product._id}`, {
+        quantity: 1,
+      });
 
-    alert("Added to cart!");
-  } catch (e) {
-    console.log("Add to Cart Error:", e);
-    console.log("Server response:", e.response?.data);
+      alert("Added to cart!");
+    } catch (e) {
+      console.log("Add to Cart Error:", e);
+      console.log("Server response:", e.response?.data);
 
-    alert(
-      e.response?.data?.message ||
-      e.message ||
-      "Failed to add product to cart"
-    );
-  }
-};
+      // User is not logged in
+      if (e.response?.status === 401) {
+        alert("Please login to add products to your cart.");
+        navigate("/login");
+        return;
+      }
 
-
+      alert(e.response?.data?.message || "Failed to add product to cart");
+    }
+  };
   const buyNow = () => {
     try {
       if (product.stockQuantity <= 0) {
@@ -109,7 +102,7 @@ const addToCart = async () => {
         </div>
 
         {/* MAIN PRODUCT SECTION */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-[1.05fr_0.95fr] gap-8">
           {/* ================= IMAGE SECTION ================= */}
           <div className="relative">
             {/* Image Card */}
@@ -148,17 +141,14 @@ const addToCart = async () => {
 
           {/* ================= PRODUCT DETAILS ================= */}
           <div className="bg-white   py-2 md:p-8 ">
-           
             <div className="text-sm font-semibold text-blue-600 mb-3">
               VELORA
             </div>
 
-            
             <h1 className="text-2xl md:text-2xl font-semibold tracking-tight text-gray-900 leading-tight">
               {product.title}
             </h1>
 
-       
             <div className="flex items-center gap-3 mt-5">
               <div className="flex items-center gap-1 bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold">
                 4.6
@@ -172,10 +162,8 @@ const addToCart = async () => {
               <span className="text-gray-500 text-sm">54 Reviews</span>
             </div>
 
-            
             <div className="border-t border-gray-100 my-6" />
 
-           
             <div>
               <div className="flex items-end gap-4">
                 <span className="text-4xl font-bold text-gray-900">
@@ -194,7 +182,6 @@ const addToCart = async () => {
               </p>
             </div>
 
-           
             <div className="mt-6 rounded-2xl bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-100 p-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-orange-500 text-white flex items-center justify-center">
@@ -211,7 +198,6 @@ const addToCart = async () => {
               </div>
             </div>
 
-            
             <div className="grid grid-cols-2 gap-4 mt-7">
               <button
                 onClick={addToCart}
@@ -226,12 +212,10 @@ const addToCart = async () => {
                 onClick={buyNow}
                 className="h-14 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-orange-200"
               >
-                
                 Buy Now
               </button>
             </div>
 
-            
             <div className="mt-8 border border-gray-200 rounded-2xl overflow-hidden">
               <Benefit
                 icon={<Truck size={21} />}
@@ -306,7 +290,7 @@ const addToCart = async () => {
           />
         </section>
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

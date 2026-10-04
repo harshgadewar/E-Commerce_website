@@ -47,6 +47,7 @@ import { CategoryProductPage } from "./pages/CategoryProductPage";
 import { ProtectedRoute } from "./pages/ProtectedRoute";
 import { AdminRoute } from "./pages/AdminRoute";
 import NotFound from "./pages/NotFound";
+import { EditAddressPage } from "./pages/EditAddressPage";
 
 function App() {
   return (
@@ -147,11 +148,17 @@ function App() {
           </AdminRoute>
         }
       />
+      <Route
+        path="/editaddress"
+        element={
+          <ProtectedRoute>
+            <EditAddressPage />
+          </ProtectedRoute>
+        }
+      />
 
       <Route path="*" element={<NotFound />} />
     </Routes>
-
-    
   );
 }
 

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import axios from "axios";
+import { api } from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
+
 
 export function Login() {
   const navigate = useNavigate();
@@ -18,9 +19,8 @@ export function Login() {
     e.preventDefault();
 
     try {
-      setLoading(true);
 
-      const res = await axios.post(
+      const res = await api.post(
         `${import.meta.env.VITE_API_URL}/login`,
         {
           email,
@@ -42,9 +42,7 @@ export function Login() {
         err.response?.data?.message ||
           "Something went wrong"
       );
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   return (

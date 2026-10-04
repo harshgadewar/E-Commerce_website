@@ -24,7 +24,7 @@ export function CategoryBar() {
   px-4
   overflow-x-auto
   whitespace-nowrap
-  bg-white
+  bg-white scrollbar-hide
       "
     >
       {/* All */}

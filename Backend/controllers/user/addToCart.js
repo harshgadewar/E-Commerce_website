@@ -86,7 +86,7 @@ export const cart = async (req, res) => {
 // View Cart
 export const viewCart = async (req, res) => {
   try {
-    console.log("cart hittingf");
+   
     const userId = req.user._id;
 
     const data = await cartModel.find({ userId }).populate("productId");
@@ -109,7 +109,7 @@ export const increaseCartQuantity = async (req, res) => {
   try {
     const userId = req.user._id;
     const { cartId } = req.params;
-    console.log(cartId);
+ 
 
     // Find cart item
     const cart = await cartModel

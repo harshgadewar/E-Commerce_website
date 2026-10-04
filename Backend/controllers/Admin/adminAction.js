@@ -80,7 +80,7 @@ export const adminviewallProduct = async (req, res) => {
     }
 
     const data = await productModel.find({ sellerId });
-    console.log(data);
+   
     return res.status(200).json({ message: "Data Fetched successfully", data });
   } catch (e) {
     return res.status(500).json({ error: e.message });
@@ -147,7 +147,7 @@ export const update = async (req, res) => {
     };
 
     if (req.file) {
-      console.log("New image received");
+     
 
       const imageUrl = await new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
@@ -197,7 +197,7 @@ export const update = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
   try {
-    console.log("delete!!!");
+    
     const sellerId = req.user._id;
     const { id } = req.params;
 

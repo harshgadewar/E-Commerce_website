@@ -1,25 +1,27 @@
 import { Navbar } from "../components/Navbar";
 import { ProductCard } from "../components/ProductCard";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { Loading } from "../components/Loading";
 import { Link } from "react-router-dom";
+import { api } from "../api/axios";
+
+
 
 export function AddtoCart() {
   const [carts, setCart] = useState([]);
   const [checkoutdata, setCheckout] = useState({});
-  const [loading, setLoading] = useState(true);
+
+
 
   const fetchCart = async () => {
     try {
-      setLoading(true);
+     
 
-      const res1 = await axios.get(
+      const res1 = await api.get(
         `${import.meta.env.VITE_API_URL}/useraction/viewcart`,
         { withCredentials: true },
       );
 
-      let res2 = await axios.get(
+      let res2 = await api.get(
         `${import.meta.env.VITE_API_URL}/useraction/cart/checkout`,
 
         {
@@ -33,16 +35,14 @@ export function AddtoCart() {
       console.log(e.response);
       console.log(e.response?.data);
       console.log(e);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   useEffect(() => {
     const loadCart = async () => {
-      setLoading(true);
+    
       await fetchCart();
-      setLoading(false);
+      
     };
 
     loadCart();
@@ -50,7 +50,8 @@ export function AddtoCart() {
 
   const increaseQuantity = async (cartId) => {
     try {
-      await axios.patch(
+      
+      await api.patch(
         `${import.meta.env.VITE_API_URL}/useraction/cart/${cartId}/increase`,
         {},
         {
@@ -66,7 +67,8 @@ export function AddtoCart() {
 
   const decreaseQuantity = async (cartId) => {
     try {
-      await axios.patch(
+       
+      await api.patch(
         `${import.meta.env.VITE_API_URL}/useraction/cart/${cartId}/decrease`,
         {},
         {
@@ -80,9 +82,7 @@ export function AddtoCart() {
     }
   };
 
-  if (loading) {
-    return <Loading />;
-  }
+  
 
   return (
     <div>
@@ -161,9 +161,9 @@ export function AddtoCart() {
                           +
                         </button>
 
-                        <button className="ml-6 text-red-500 font-medium hover:underline">
+                        {/* <button className="ml-6 text-red-500 font-medium hover:underline">
                           Remove
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>

@@ -13,9 +13,11 @@ import { myOrders } from "../controllers/user/myOrder.js";
 import { viewProduct } from "../controllers/user/viewProduct.js";
 import {
   adduseraddress,
+  editUserAddress,
   getUserAddress,
 } from "../controllers/user/userAddress.js";
 import { getProductsByCategory } from "../controllers/user/fetchproductbycategory.js";
+import { generateAccessToken } from "../controllers/auth/accessTokenController.js";
 
 const router = express.Router();
 
@@ -32,6 +34,8 @@ router.get("/myorders", authMiddleware, myOrders);
 router.get("/viewproduct/:id", viewProduct);
 router.post("/saveaddress", authMiddleware, adduseraddress);
 router.get("/getaddress", authMiddleware, getUserAddress);
+router.put("/editaddress",authMiddleware, editUserAddress);
 router.get("/cart/checkout", authMiddleware, checkOutFeature);
+router.get("/refresh", generateAccessToken);
 
 export default router;

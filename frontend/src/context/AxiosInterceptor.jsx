@@ -22,8 +22,47 @@ export function AxiosInterceptor() {
         stopLoading();
         return response;
       },
-      (error) => {
+
+      async (error) => {
+        const originalRequest = error.config;
+
         stopLoading();
+
+        // Access token expired/missing
+        if (
+          error.response?.status === 401 &&
+          originalRequest &&
+          !originalRequest._retry &&
+          !originalRequest.url?.includes("/useraction/refresh")
+        ) {
+          originalRequest._retry = true;
+
+          try {
+            // Get a new access token using refresh token
+            await api.get("/useraction/refresh");
+
+            // Retry the original request
+            return api(originalRequest);
+          } catch (refreshError) {
+            console.log(
+              "Refresh failed status:",
+              refreshError.response?.status
+            );
+
+            console.log(
+              "Refresh failed data:",
+              refreshError.response?.data
+            );
+
+            console.log(
+              "Refresh failed URL:",
+              refreshError.config?.url
+            );
+
+            return Promise.reject(refreshError);
+          }
+        }
+
         return Promise.reject(error);
       }
     );

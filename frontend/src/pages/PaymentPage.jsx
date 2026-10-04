@@ -1,4 +1,4 @@
-import axios from "axios";
+import { api } from "../api/axios";
 import { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -24,7 +24,7 @@ export function PaymentPage() {
     }
 
     try {
-      const { data } = await axios.post(
+      const { data } = await api.post(
         `${import.meta.env.VITE_API_URL}/payment`,
         {
           buyNow: buyNow || false,
@@ -49,7 +49,7 @@ export function PaymentPage() {
 
         handler: async function (response) {
           try {
-            const verify = await axios.post(
+            const verify = await api.post(
               `${import.meta.env.VITE_API_URL}/payment/verify`,
               {
                 ...response,
@@ -61,11 +61,17 @@ export function PaymentPage() {
 
             if (verify.data.success) {
               alert("Payment successful!");
-              navigate("/myorders");
+              navigate("/myorder");
             }
           } catch (e) {
-            console.log(e.response?.data || e.message);
-            alert("Payment verification failed");
+            console.error(
+              "Payment verification error:",
+              e.response?.data || e.message,
+            );
+
+            alert(
+              "Payment verification failed. Please contact support if money was deducted.",
+            );
           }
         },
 
@@ -76,13 +82,48 @@ export function PaymentPage() {
 
       const razorpay = new window.Razorpay(options);
 
+      razorpay.on("payment.failed", function (response) {
+        console.error("Razorpay Payment Failed:", response);
+
+        console.log("Code:", response.error?.code);
+        console.log("Description:", response.error?.description);
+        console.log("Reason:", response.error?.reason);
+        console.log("Source:", response.error?.source);
+        console.log("Step:", response.error?.step);
+
+        const reason =
+          response.error?.description ||
+          response.error?.reason ||
+          "Payment could not be completed.";
+
+        alert(
+          `Payment failed\n\n${reason}\n\nPlease try again or use another available payment method.`,
+        );
+      });
+
       razorpay.open();
     } catch (e) {
-      console.log("Buy Now Error:", e);
-      console.log("Server response:", e.response?.data);
+      console.error("Payment creation error:", e.response?.data || e.message);
+
+      const errorCode = e.response?.data?.errorCode;
+      const message = e.response?.data?.message;
+
+      if (
+        errorCode === "BAD_REQUEST_ERROR" &&
+        message?.toLowerCase().includes("maximum amount")
+      ) {
+        alert(
+          "Payment Limit Reached\n\n" +
+            "Your order total is above the maximum payment limit of ₹5,00,000.\n\n" +
+            "Please reduce the order amount and try again.",
+        );
+
+        return;
+      }
+
+      alert(message || "Unable to start payment. Please try again.");
     }
   };
-
   // ================= FETCH DATA =================
 
   useEffect(() => {
@@ -91,7 +132,7 @@ export function PaymentPage() {
         setLoading(true);
 
         // Address is required for both Buy Now and Cart
-        const res3 = await axios.get(
+        const res3 = await api.get(
           `${import.meta.env.VITE_API_URL}/useraction/getaddress`,
           {
             withCredentials: true,
@@ -115,7 +156,7 @@ export function PaymentPage() {
 
         // ================= CART CHECKOUT =================
 
-        const res1 = await axios.get(
+        const res1 = await api.get(
           `${import.meta.env.VITE_API_URL}/useraction/viewcart`,
           {
             withCredentials: true,
@@ -124,7 +165,7 @@ export function PaymentPage() {
 
         setCart(res1.data.cart);
 
-        const res2 = await axios.get(
+        const res2 = await api.get(
           `${import.meta.env.VITE_API_URL}/useraction/cart/checkout`,
           {
             withCredentials: true,
@@ -133,6 +174,7 @@ export function PaymentPage() {
 
         setCheckout(res2.data);
       } catch (e) {
+        alert(e.response?.data.message);
         console.log(e.response?.data || e.message);
 
         setAddress({});
@@ -186,7 +228,7 @@ export function PaymentPage() {
 
                   <button
                     className="bg-[#F36F30] py-1 px-2 rounded text-white h-fit"
-                    onClick={() => navigate("/address")}
+                    onClick={() => navigate("/editaddress")}
                   >
                     Edit Address
                   </button>
