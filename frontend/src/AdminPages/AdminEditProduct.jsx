@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AdminNavbar } from "./Components/AdminNavbar";
-import { api } from "../src/api/axios";
+import { api } from "../api/axios";
+
 
 export function AdminEditProduct() {
   const { id } = useParams();

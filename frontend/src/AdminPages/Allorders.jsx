@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "../api/axios";
 import { AdminNavbar } from "./Components/AdminNavbar";
 
 export function Allorders() {
@@ -19,7 +19,7 @@ export function Allorders() {
   // =========================
   const fetchOrders = async () => {
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${import.meta.env.VITE_API_URL}/admin/adminallorders`
       );
 
@@ -36,7 +36,7 @@ export function Allorders() {
   // =========================
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await axios.patch(
+      await api.patch(
         `${import.meta.env.VITE_API_URL}/admin/orders/${orderId}/status`,
         {
           status: newStatus,

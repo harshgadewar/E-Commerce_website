@@ -1,7 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { AdminNavbar } from "./Components/AdminNavbar";
-import { api } from "../src/api/axios";
+import { api } from "../api/axios";
 
 export function AddProductPage() {
   const [product, setProduct] = useState({

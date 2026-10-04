@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "../api/axios";
 import { Link } from "react-router-dom";
 import { AdminNavbar } from "./Components/AdminNavbar";
 
 export function AdminAllProduct() {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(
+      const res = await api.get(
         `${import.meta.env.VITE_API_URL}/admin/adminviewallproductt`,
         {
           withCredentials: true,
@@ -19,9 +19,7 @@ export function AdminAllProduct() {
       setProducts(res.data.data);
     } catch (e) {
       console.log(e);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   useEffect(() => {
@@ -36,7 +34,7 @@ export function AdminAllProduct() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/admin/deleteproduct/${id}`, {
+      await api.delete(`${import.meta.env.VITE_API_URL}/admin/deleteproduct/${id}`, {
         withCredentials: true,
       });
 

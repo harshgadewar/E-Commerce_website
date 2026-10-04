@@ -1,6 +1,7 @@
+
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { AdminNavbar } from "./Components/AdminNavbar";
+import { api } from "../api/axios";
 
 export function AdminDashboard() {
   const [dashboard, setDashboard] = useState({
@@ -10,12 +11,10 @@ export function AdminDashboard() {
     recentOrders: [],
   });
 
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const res = await axios.get(
+        const res = await api.get(
           `${import.meta.env.VITE_API_URL}/admin/adminpannel`,
           {
             withCredentials: true,
@@ -25,27 +24,11 @@ export function AdminDashboard() {
         setDashboard(res.data.dashboard);
       } catch (e) {
         console.log(e);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchDashboard();
   }, []);
-
-  if (loading) {
-    return (
-      <>
-        <AdminNavbar />
-
-        <div className="min-h-screen flex justify-center items-center">
-          <p className="text-gray-500 text-lg">
-            Loading dashboard...
-          </p>
-        </div>
-      </>
-    );
-  }
 
   return (
     <>
@@ -113,7 +96,6 @@ export function AdminDashboard() {
             ) : (
               <div className="bg-white rounded-xl shadow-md overflow-hidden">
 
-                {/* Table */}
                 <div className="overflow-x-auto">
 
                   <table className="w-full">
@@ -139,21 +121,16 @@ export function AdminDashboard() {
                     </thead>
 
                     <tbody>
-
                       {dashboard.recentOrders.map((order) => (
                         <tr
                           key={order._id}
                           className="border-b last:border-b-0 hover:bg-gray-50"
                         >
-
-                          {/* Order ID */}
                           <td className="p-4 text-sm font-medium text-gray-800">
                             #{order._id.slice(-6)}
                           </td>
 
-                          {/* Customer */}
                           <td className="p-4">
-
                             <p className="font-medium text-gray-800">
                               {order.userId?.name || "Unknown"}
                             </p>
@@ -161,17 +138,13 @@ export function AdminDashboard() {
                             <p className="text-sm text-gray-500">
                               {order.userId?.email || ""}
                             </p>
-
                           </td>
 
-                          {/* Amount */}
                           <td className="p-4 font-semibold text-green-600">
                             ₹{order.totalPrice}
                           </td>
 
-                          {/* Status */}
                           <td className="p-4">
-
                             <span
                               className={`px-3 py-1 rounded-full text-sm font-semibold ${
                                 order.status === "Delivered"
@@ -185,12 +158,9 @@ export function AdminDashboard() {
                             >
                               {order.status || "Pending"}
                             </span>
-
                           </td>
-
                         </tr>
                       ))}
-
                     </tbody>
 
                   </table>
