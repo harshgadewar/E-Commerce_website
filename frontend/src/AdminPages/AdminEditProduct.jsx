@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AdminNavbar } from "./Components/AdminNavbar";
+import { AdminNavigationBar } from "./Components/AdminNavigationBar";
 import { api } from "../api/axios";
 
 
@@ -98,7 +98,7 @@ export function AdminEditProduct() {
 
   return (
     <>
-      <AdminNavbar />
+      <AdminNavigationBar />
 
       <div className="min-h-screen bg-slate-50 px-4 py-8">
         <div className="max-w-3xl mx-auto">

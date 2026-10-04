@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/axios";
 import { Link } from "react-router-dom";
-import { AdminNavbar } from "./Components/AdminNavbar";
+import { AdminNavigationBar } from "./Components/AdminNavigationBar";
 
 export function AdminAllProduct() {
   const [products, setProducts] = useState([]);
@@ -48,7 +48,7 @@ export function AdminAllProduct() {
 
   return (
     <>
-      <AdminNavbar />
+      <AdminNavigationBar />
 
       <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">

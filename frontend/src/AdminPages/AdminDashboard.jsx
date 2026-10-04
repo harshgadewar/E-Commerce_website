@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { AdminNavbar } from "./Components/AdminNavbar";
+import { AdminNavigationBar } from "./Components/AdminNavigationBar";
 import { api } from "../api/axios";
 
 export function AdminDashboard() {
@@ -32,7 +32,7 @@ export function AdminDashboard() {
 
   return (
     <>
-      <AdminNavbar />
+      <AdminNavigationBar />
 
       <div className="min-h-screen p-8">
         <div className="max-w-6xl mx-auto px-4">

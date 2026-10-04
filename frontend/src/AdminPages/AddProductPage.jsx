@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AdminNavbar } from "./Components/AdminNavbar"; 
+import { AdminNavigationBar } from "./Components/AdminNavigationBar";
 import { api } from "../api/axios";
 
 export function AddProductPage() {
@@ -82,7 +82,7 @@ export function AddProductPage() {
 
   return (
     <>
-      <AdminNavbar />
+      <AdminNavigationBar />
 
       <div className="min-h-screen py-10">
         <div className="max-w-3xl mx-auto px-4">

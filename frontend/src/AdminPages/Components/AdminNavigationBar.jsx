@@ -3,7 +3,7 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
 import logo from "/veloraaaalogo.png";
 
-export function AdminNavbar() {
+export function AdminNavigationBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 

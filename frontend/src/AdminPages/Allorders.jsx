@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { api } from "../api/axios";
-import { AdminNavbar } from "./Components/AdminNavbar";
+import { AdminNavigationBar } from "./Components/AdminNavigationBar";
 
 export function Allorders() {
   const [orders, setOrders] = useState([]);
@@ -90,7 +90,7 @@ export function Allorders() {
 
   return (
     <>
-      <AdminNavbar />
+      <AdminNavigationBar />
 
       <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
