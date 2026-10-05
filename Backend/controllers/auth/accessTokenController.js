@@ -12,10 +12,7 @@ export const generateAccessToken = async (req, res) => {
       });
     }
 
-    const decoded = jwt.verify(
-      refreshToken,
-      process.env.REFRESH_TOKEN_SECRET
-    );
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
     const tokenExists = await redisClient.get(refreshToken);
 
@@ -27,10 +24,17 @@ export const generateAccessToken = async (req, res) => {
 
     const accessToken = generateAccessTokenutil(decoded.id);
 
+    // res.cookie("accessToken", accessToken, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: "lax",
+    //   maxAge: 15 * 60 * 1000,
+    // });
+
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 15 * 60 * 1000,
     });
 
