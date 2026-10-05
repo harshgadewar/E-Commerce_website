@@ -10,27 +10,22 @@ import { Footer } from "../components/Footer";
 export function CategoryProductPage() {
   const { category } = useParams();
 
-
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchCategoryProducts = async () => {
       try {
-        
-
         const res = await api.get(
           `${import.meta.env.VITE_API_URL}/useraction/category/${encodeURIComponent(
-            category
-          )}`
+            category,
+          )}`,
         );
-
-      
 
         setProducts(res.data);
       } catch (err) {
         console.log(err);
         setProducts([]);
-      } 
+      }
     };
 
     fetchCategoryProducts();
@@ -46,21 +41,16 @@ export function CategoryProductPage() {
 
       <div className="min-h-screen bg-slate-50 py-8 mb-20">
         <div className="max-w-7xl mx-auto px-4">
-
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                {category}
-              </h1>
+              <h1 className="text-3xl font-bold text-gray-900">{category}</h1>
 
               <p className="text-gray-500 mt-1">
                 Explore our {category.toLowerCase()} products
               </p>
             </div>
 
-            <p className="text-gray-500">
-              {products.length} products
-            </p>
+            <p className="text-gray-500">{products.length} products</p>
           </div>
 
           {products.length === 0 ? (
@@ -76,18 +66,15 @@ export function CategoryProductPage() {
           ) : (
             <div
               className="
-                grid
-                grid-cols-2
-                sm:grid-cols-3
-                md:grid-cols-5
-                lg:grid-cols-5
-              "
+      flex
+      flex-wrap
+      justify-start
+      gap-4
+      mt-6
+    "
             >
               {products.map((product) => (
-                <ProductCard
-                  key={product._id}
-                  product={product}
-                />
+                <ProductCard key={product._id} product={product} />
               ))}
             </div>
           )}

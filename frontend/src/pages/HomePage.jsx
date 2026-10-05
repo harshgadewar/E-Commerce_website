@@ -199,9 +199,9 @@ export function HomePage() {
 
           {/* Left Arrow */}
           {/* Left Arrow */}
-<button
-  onClick={() => scrollCarousel(trendingRef, "left")}
-  className="
+          <button
+            onClick={() => scrollCarousel(trendingRef, "left")}
+            className="
     absolute
     left-[-14px]
     top-1/2
@@ -223,14 +223,14 @@ export function HomePage() {
     duration-200
     z-20
   "
->
-  <ChevronLeft size={19} strokeWidth={2.5} />
-</button>
+          >
+            <ChevronLeft size={19} strokeWidth={2.5} />
+          </button>
 
-{/* Right Arrow */}
-<button
-  onClick={() => scrollCarousel(trendingRef, "right")}
-  className="
+          {/* Right Arrow */}
+          <button
+            onClick={() => scrollCarousel(trendingRef, "right")}
+            className="
     absolute
     right-[-14px]
     top-1/2
@@ -252,9 +252,9 @@ export function HomePage() {
     duration-200
     z-20
   "
->
-  <ChevronRight size={19} strokeWidth={2.5} />
-</button>
+          >
+            <ChevronRight size={19} strokeWidth={2.5} />
+          </button>
         </div>
       </div>
 
