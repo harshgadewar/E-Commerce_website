@@ -21,7 +21,7 @@ export function Login() {
     try {
 
       const res = await api.post(
-        `${import.meta.env.VITE_API_URL}/login`,
+       "login" ,
         {
           email,
           password,
