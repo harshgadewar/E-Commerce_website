@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://veloraa-o1nc9q7fq-harsh-bdd7.vercel.app/">
+  <a href="https://velora-nine-bay.vercel.app/">
     <strong>🌐 Live Demo</strong>
   </a>
   &nbsp; • &nbsp;
