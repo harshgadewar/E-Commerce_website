@@ -37,7 +37,7 @@ export function Allorders() {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       await api.patch(
-        "/admin/orders/${orderId}/status",
+        `/admin/orders/${orderId}/status`,
         {
           status: newStatus,
         }
