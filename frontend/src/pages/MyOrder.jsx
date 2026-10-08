@@ -10,7 +10,7 @@ export function MyOrder() {
     const fetchorder = async () => {
       try {
         const res = await api.get(
-          `${import.meta.env.VITE_API_URL}/useraction/myorders`,
+          "/useraction/myorders",
           {
             withCredentials: true,
           },
