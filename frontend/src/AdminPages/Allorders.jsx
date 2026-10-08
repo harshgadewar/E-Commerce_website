@@ -20,7 +20,7 @@ export function Allorders() {
   const fetchOrders = async () => {
     try {
       const response = await api.get(
-        `${import.meta.env.VITE_API_URL}/admin/adminallorders`
+        "/admin/adminallorders"
       );
 
       setOrders(response.data.data);
@@ -37,7 +37,7 @@ export function Allorders() {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       await api.patch(
-        `${import.meta.env.VITE_API_URL}/admin/orders/${orderId}/status`,
+        "/admin/orders/${orderId}/status",
         {
           status: newStatus,
         }
