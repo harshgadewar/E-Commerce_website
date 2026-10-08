@@ -34,7 +34,7 @@ export function AddressTakingPage() {
     try {
     
       const res = api.post(
-        `${import.meta.env.VITE_API_URL}/useraction/saveaddress`,
+        "/useraction/saveaddress",
         
           address,
         
