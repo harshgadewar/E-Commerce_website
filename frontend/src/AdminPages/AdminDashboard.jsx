@@ -15,7 +15,7 @@ export function AdminDashboard() {
     const fetchDashboard = async () => {
       try {
         const res = await api.get(
-          `${import.meta.env.VITE_API_URL}/admin/adminpannel`,
+          "/admin/adminpannel",
           {
             withCredentials: true,
           }
