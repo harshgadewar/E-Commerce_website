@@ -157,7 +157,7 @@ export function PaymentPage() {
         // ================= CART CHECKOUT =================
 
         const res1 = await api.get(
-          `/useraction/viewcart`,
+          "/useraction/viewcart",
           {
             withCredentials: true,
           },
