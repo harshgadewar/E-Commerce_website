@@ -38,6 +38,7 @@ app.use(limiter);
 const allowedOrigins = [
   "http://localhost:5173",
   "https://veloraa-o1nc9q7fq-harsh-bdd7.vercel.app",
+  "https://velora-nine-bay.vercel.app"
 ];
 
 app.use(
