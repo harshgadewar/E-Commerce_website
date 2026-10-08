@@ -25,7 +25,7 @@ export function PaymentPage() {
 
     try {
       const { data } = await api.post(
-        `${import.meta.env.VITE_API_URL}/payment`,
+        "/payment",
         {
           buyNow: buyNow || false,
           productId: buyNow ? product?._id : undefined,
@@ -50,7 +50,7 @@ export function PaymentPage() {
         handler: async function (response) {
           try {
             const verify = await api.post(
-              `${import.meta.env.VITE_API_URL}/payment/verify`,
+              "/payment/verify",
               {
                 ...response,
               },
@@ -133,7 +133,7 @@ export function PaymentPage() {
 
         // Address is required for both Buy Now and Cart
         const res3 = await api.get(
-          `${import.meta.env.VITE_API_URL}/useraction/getaddress`,
+          "/useraction/getaddress",
           {
             withCredentials: true,
           },
@@ -166,7 +166,7 @@ export function PaymentPage() {
         setCart(res1.data.cart);
 
         const res2 = await api.get(
-          `${import.meta.env.VITE_API_URL}/useraction/cart/checkout`,
+          "/useraction/cart/checkout",
           {
             withCredentials: true,
           },
