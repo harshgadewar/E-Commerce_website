@@ -28,7 +28,7 @@ export function ProductPage() {
     const fetchProduct = async () => {
       try {
         const res = await api.get(
-          "/useraction/viewproduct/${id}",
+          `/useraction/viewproduct/${id}`,
         );
 
         setProduct(res.data);
