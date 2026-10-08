@@ -16,7 +16,7 @@ export function CategoryProductPage() {
     const fetchCategoryProducts = async () => {
       try {
         const res = await api.get(
-          `${import.meta.env.VITE_API_URL}/useraction/category/${encodeURIComponent(
+          `/useraction/category/${encodeURIComponent(
             category,
           )}`,
         );
