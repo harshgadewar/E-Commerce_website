@@ -23,7 +23,7 @@ export function EditAddressPage() {
     const fetchAddress = async () => {
       try {
         const res = await api.get(
-          `${import.meta.env.VITE_API_URL}/useraction/getaddress`,
+          "/useraction/getaddress",
           {
             withCredentials: true,
           },
@@ -65,7 +65,7 @@ export function EditAddressPage() {
 
     try {
       const res = await api.put(
-        `${import.meta.env.VITE_API_URL}/useraction/editaddress`,
+        "/useraction/editaddress",
         address,
         {
           withCredentials: true,
