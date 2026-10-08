@@ -28,10 +28,10 @@ export function HomePage() {
     const fetchData = async () => {
       try {
         const [productsRes, electronicsRes] = await Promise.all([
-          api.get(`${import.meta.env.VITE_API_URL}/useraction/alllistings`),
+          api.get("/useraction/alllistings"),
 
           api.get(
-            `${import.meta.env.VITE_API_URL}/useraction/category/electronics`,
+            "/useraction/category/electronics",
           ),
         ]);
 
@@ -51,7 +51,7 @@ export function HomePage() {
         setSearching(false);
 
         const res = await api.get(
-          `${import.meta.env.VITE_API_URL}/useraction/alllistings`,
+          "/useraction/alllistings",
         );
 
         setProducts(res.data);
@@ -61,7 +61,7 @@ export function HomePage() {
       setSearching(true);
 
       const res = await api.get(
-        `${import.meta.env.VITE_API_URL}/useraction/search?q=${encodeURIComponent(
+        `/useraction/search?q=${encodeURIComponent(
           query,
         )}`,
       );
