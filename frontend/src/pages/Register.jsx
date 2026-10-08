@@ -22,7 +22,7 @@ function Register() {
        
 
       const res = await api.post(
-        `${import.meta.env.VITE_API_URL}/signup`,
+        "/signup",
         {
           name,
           email,
