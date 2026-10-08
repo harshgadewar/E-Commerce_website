@@ -17,12 +17,12 @@ export function AddtoCart() {
      
 
       const res1 = await api.get(
-        `${import.meta.env.VITE_API_URL}/useraction/viewcart`,
+        "/useraction/viewcart",
         { withCredentials: true },
       );
 
       let res2 = await api.get(
-        `${import.meta.env.VITE_API_URL}/useraction/cart/checkout`,
+        "/useraction/cart/checkout",
 
         {
           withCredentials: true,
@@ -52,7 +52,7 @@ export function AddtoCart() {
     try {
       
       await api.patch(
-        `${import.meta.env.VITE_API_URL}/useraction/cart/${cartId}/increase`,
+        `/useraction/cart/${cartId}/increase`,
         {},
         {
           withCredentials: true,
@@ -69,7 +69,7 @@ export function AddtoCart() {
     try {
        
       await api.patch(
-        `${import.meta.env.VITE_API_URL}/useraction/cart/${cartId}/decrease`,
+        `/useraction/cart/${cartId}/decrease`,
         {},
         {
           withCredentials: true,
