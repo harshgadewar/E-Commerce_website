@@ -28,7 +28,7 @@ export function ProductPage() {
     const fetchProduct = async () => {
       try {
         const res = await api.get(
-          `${import.meta.env.VITE_API_URL}/useraction/viewproduct/${id}`,
+          "/useraction/viewproduct/${id}",
         );
 
         setProduct(res.data);
