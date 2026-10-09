@@ -8,10 +8,12 @@ export function AddProductPage() {
     description: "",
     price: "",
     stockQuantity: "",
+    category: "",
   });
 
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // Handle text inputs
   const handleChange = (e) => {
@@ -27,6 +29,24 @@ export function AddProductPage() {
 
     if (!file) return;
 
+    // Validate image type
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image file");
+      e.target.value = "";
+      setImage(null);
+      setPreview(null);
+      return;
+    }
+
+    // Validate image size (maximum 5 MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Image size must not exceed 5 MB");
+      e.target.value = "";
+      setImage(null);
+      setPreview(null);
+      return;
+    }
+
     setImage(file);
 
     // Image preview
@@ -36,16 +56,73 @@ export function AddProductPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (loading) return;
+
+    // Validate title
+    if (!product.title.trim()) {
+      alert("Please enter the product title");
+      return;
+    }
+
+    if (product.title.trim().length < 3) {
+      alert("Product title must contain at least 3 characters");
+      return;
+    }
+
+    // Validate description
+    if (!product.description.trim()) {
+      alert("Please enter the product description");
+      return;
+    }
+
+    if (product.description.trim().length < 10) {
+      alert("Product description must contain at least 10 characters");
+      return;
+    }
+
+    // Validate price
+    const price = Number(product.price);
+
+    if (
+      product.price.trim() === "" ||
+      !Number.isFinite(price) ||
+      price <= 0
+    ) {
+      alert("Please enter a valid price greater than 0");
+      return;
+    }
+
+    // Validate stock quantity
+    const stockQuantity = Number(product.stockQuantity);
+
+    if (
+      product.stockQuantity.trim() === "" ||
+      !Number.isInteger(stockQuantity) ||
+      stockQuantity < 0
+    ) {
+      alert("Stock quantity must be a non-negative whole number");
+      return;
+    }
+
+    // Validate category
+    if (!product.category) {
+      alert("Please select a product category");
+      return;
+    }
+
+    // Validate image
     if (!image) {
       alert("Please select an image");
       return;
     }
 
+    setLoading(true);
+
     try {
       const formData = new FormData();
 
-      formData.append("title", product.title);
-      formData.append("description", product.description);
+      formData.append("title", product.title.trim());
+      formData.append("description", product.description.trim());
       formData.append("price", product.price);
       formData.append("stockQuantity", product.stockQuantity);
       formData.append("category", product.category);
@@ -69,6 +146,7 @@ export function AddProductPage() {
         description: "",
         price: "",
         stockQuantity: "",
+        category: "",
       });
 
       setImage(null);
@@ -77,6 +155,8 @@ export function AddProductPage() {
       console.error(error);
 
       alert(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -106,8 +186,10 @@ export function AddProductPage() {
                 placeholder="Enter product title"
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
                 required
+                minLength={3}
               />
             </div>
+
             {/* Description */}
             <div className="mb-5">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -122,8 +204,10 @@ export function AddProductPage() {
                 rows="4"
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 required
+                minLength={10}
               />
             </div>
+
             {/* Price + Stock */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
               <div>
@@ -137,7 +221,8 @@ export function AddProductPage() {
                   value={product.price}
                   onChange={handleChange}
                   placeholder="₹ Price"
-                  min="1"
+                  min="0.01"
+                  step="0.01"
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
@@ -155,11 +240,13 @@ export function AddProductPage() {
                   onChange={handleChange}
                   placeholder="Available quantity"
                   min="0"
+                  step="1"
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
             </div>
+
             {/* Image */}
             <div className="mb-6">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -174,6 +261,7 @@ export function AddProductPage() {
                 required
               />
             </div>
+
             <div className="mb-6">
               <select
                 name="category"
@@ -193,7 +281,7 @@ export function AddProductPage() {
                 <option value="Fashion">Fashion</option>
               </select>
             </div>
-            "",
+
             {/* Image Preview */}
             {preview && (
               <div className="mb-6">
@@ -210,17 +298,18 @@ export function AddProductPage() {
                 </div>
               </div>
             )}
+
             {/* Submit */}
             <button
               type="submit"
-             
+              disabled={loading}
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition"
             >
-              Add Product
+              {loading ? "Adding Product..." : "Add Product"}
             </button>
           </form>
         </div>
       </div>
     </>
   );
-}
+        }
