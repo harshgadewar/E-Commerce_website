@@ -252,10 +252,10 @@ export function PaymentPage() {
                   <button
   className="bg-[#F36F30] py-2 px-4 rounded text-white h-fit"
   onClick={() =>
-    navigate("/address", {
-      state: location.state,
-    })
-  }
+  navigate("/address", {
+    state: location.state,
+  })
+             }
 >
   Add Address
 </button>
