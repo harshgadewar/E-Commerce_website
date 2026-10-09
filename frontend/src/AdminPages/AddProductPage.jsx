@@ -278,7 +278,7 @@ export function AddProductPage() {
                 <option value="Grocery">Grocery</option>
                 <option value="Beauty">Beauty</option>
                 <option value="Home">Home</option>
-                <option value="Fashion">Fashion</option>
+              
               </select>
             </div>
 
