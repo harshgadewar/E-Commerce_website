@@ -1,12 +1,18 @@
 import { Navbar } from "../components/Navbar";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { api } from "../api/axios";
 
 
 
 export function AddressTakingPage() {
+
+  const navigate = useNavigate();
+const location = useLocation();
+
+const checkoutState = location.state;
+  
   const [address, setAddress] = useState({
     firstname: "",
     lastname: "",
@@ -44,7 +50,10 @@ export function AddressTakingPage() {
       );
       alert("address saved!!");
 
-      navigate("/payment");
+    navigate("/payment", {
+  state: checkoutState,
+  replace: true,
+});
     } catch (e) {
       console.log(e);
       console.log(e.response);
