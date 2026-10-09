@@ -1,6 +1,6 @@
 import { Navbar } from "../components/Navbar";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { api } from "../api/axios";
 
@@ -14,6 +14,9 @@ export function EditAddressPage() {
     city: "",
     state: "",
   });
+
+  const location = useLocation();
+const checkoutState = location.state;
 
   const navigate = useNavigate();
 
@@ -76,7 +79,10 @@ export function EditAddressPage() {
 
       alert("Address updated successfully!!");
 
-      navigate("/payment");
+      navigate("/payment", {
+  state: checkoutState,
+  replace: true,
+});
     } catch (e) {
       console.log("Edit address error:", e);
       console.log(e.response);
