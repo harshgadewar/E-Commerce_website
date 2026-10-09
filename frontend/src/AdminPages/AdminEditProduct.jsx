@@ -18,7 +18,6 @@ export function AdminEditProduct() {
 
   const [selectedImage, setSelectedImage] = useState(null);
 
- 
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -35,7 +34,7 @@ export function AdminEditProduct() {
       } catch (e) {
         console.log(e);
         alert("Failed to load product");
-      } 
+      }
     };
 
     fetchProduct();
@@ -53,21 +52,91 @@ export function AdminEditProduct() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
-    if (file) {
-      setSelectedImage(file);
+    if (!file) return;
+
+    // Validate image type
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image file");
+      e.target.value = "";
+      setSelectedImage(null);
+      return;
     }
+
+    // Validate image size (maximum 5 MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Image size must not exceed 5 MB");
+      e.target.value = "";
+      setSelectedImage(null);
+      return;
+    }
+
+    setSelectedImage(file);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (saving) return;
+
+    // Validate title
+    if (!product.title?.trim()) {
+      alert("Please enter the product title");
+      return;
+    }
+
+    if (product.title.trim().length < 3) {
+      alert("Product title must contain at least 3 characters");
+      return;
+    }
+
+    // Validate description
+    if (!product.description?.trim()) {
+      alert("Please enter the product description");
+      return;
+    }
+
+    if (product.description.trim().length < 10) {
+      alert("Product description must contain at least 10 characters");
+      return;
+    }
+
+    // Validate price
+    const price = Number(product.price);
+
+    if (
+      product.price === "" ||
+      !Number.isFinite(price) ||
+      price <= 0
+    ) {
+      alert("Please enter a valid price greater than 0");
+      return;
+    }
+
+    // Validate stock quantity
+    const stockQuantity = Number(product.stockQuantity);
+
+    if (
+      product.stockQuantity === "" ||
+      !Number.isInteger(stockQuantity) ||
+      stockQuantity < 0
+    ) {
+      alert("Stock quantity must be a non-negative whole number");
+      return;
+    }
+
+    // Validate category
+    if (!product.category) {
+      alert("Please select a product category");
+      return;
+    }
 
     try {
       setSaving(true);
 
       const formData = new FormData();
 
-      formData.append("title", product.title);
-      formData.append("description", product.description);
+      formData.append("title", product.title.trim());
+      formData.append("description", product.description.trim());
       formData.append("price", product.price);
       formData.append("stockQuantity", product.stockQuantity);
       formData.append("category", product.category);
@@ -91,10 +160,10 @@ export function AdminEditProduct() {
       console.log(e);
 
       alert(e.response?.data?.message || "Failed to update product");
-    } 
+    } finally {
+      setSaving(false);
+    }
   };
-
- 
 
   return (
     <>
@@ -161,6 +230,7 @@ export function AdminEditProduct() {
                 onChange={handleChange}
                 className="w-full border rounded-lg p-3"
                 required
+                minLength={3}
               />
             </div>
 
@@ -178,6 +248,7 @@ export function AdminEditProduct() {
                 rows="4"
                 className="w-full border rounded-lg p-3"
                 required
+                minLength={10}
               />
             </div>
 
@@ -195,6 +266,8 @@ export function AdminEditProduct() {
                   value={product.price}
                   onChange={handleChange}
                   className="w-full border rounded-lg p-3"
+                  min="0.01"
+                  step="0.01"
                   required
                 />
               </div>
@@ -210,14 +283,17 @@ export function AdminEditProduct() {
                   value={product.stockQuantity}
                   onChange={handleChange}
                   className="w-full border rounded-lg p-3"
+                  min="0"
+                  step="1"
                   required
                 />
               </div>
             </div>
+
             <div>
               <select
                 name="category"
-                value={product.category}
+                value={product.category || ""}
                 onChange={handleChange}
                 className="w-full border rounded-lg p-3"
                 required
@@ -258,4 +334,4 @@ export function AdminEditProduct() {
       </div>
     </>
   );
-}
+      }
