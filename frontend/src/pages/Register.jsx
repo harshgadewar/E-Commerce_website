@@ -6,8 +6,6 @@ import { useLoading } from "../context/LoadingContext";
 
 function Register() {
   const navigate = useNavigate();
-  
-
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,14 +16,54 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-       
+    // Prevent multiple submissions
+    if (loading) return;
 
+    // Validate name
+    const trimmedName = name.trim();
+
+    if (!trimmedName) {
+      alert("Please enter your name");
+      return;
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(trimmedName)) {
+      alert("Name can contain only letters and spaces");
+      return;
+    }
+
+    // Validate email
+    const trimmedEmail = email.trim();
+
+    if (!trimmedEmail) {
+      alert("Please enter your email");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+
+    // Validate password
+    if (!password.trim()) {
+      alert("Please enter your password");
+      return;
+    }
+
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
       const res = await api.post(
         "/signup",
         {
-          name,
-          email,
+          name: trimmedName,
+          email: trimmedEmail,
           password,
         }
       );
@@ -42,7 +80,9 @@ function Register() {
         err.response?.data?.message ||
           "Something went wrong"
       );
-    } 
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
