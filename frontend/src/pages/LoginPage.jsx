@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
 
-
 export function Login() {
   const navigate = useNavigate();
   const { fetchUser } = useAuth();
@@ -18,12 +17,36 @@ export function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
+  
+    const trimmedEmail = email.trim();
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!trimmedEmail) {
+      alert("Please enter your email.");
+      return;
+    }
+
+    if (!emailRegex.test(trimmedEmail)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    
+    if (!password.trim()) {
+      alert("Please enter your password.");
+      return;
+    }
+
+    if (loading) return;
+
+    setLoading(true);
+
+    try {
       const res = await api.post(
-       "login" ,
+        "login",
         {
-          email,
+          email: trimmedEmail,
           password,
         },
         {
@@ -42,7 +65,9 @@ export function Login() {
         err.response?.data?.message ||
           "Something went wrong"
       );
-    } 
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -195,4 +220,4 @@ export function Login() {
       </div>
     </div>
   );
-}
+                                                   }
