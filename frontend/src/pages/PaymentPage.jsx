@@ -227,11 +227,15 @@ export function PaymentPage() {
                   </div>
 
                   <button
-                    className="bg-[#F36F30] py-1 px-2 rounded text-white h-fit"
-                    onClick={() => navigate("/editaddress")}
-                  >
-                    Edit Address
-                  </button>
+  className="bg-[#F36F30] py-1 px-2 rounded text-white h-fit"
+  onClick={() =>
+    navigate("/editaddress", {
+      state: location.state,
+    })
+  }
+>
+  Edit Address
+</button>
                 </>
               ) : (
                 <>
@@ -246,11 +250,15 @@ export function PaymentPage() {
                   </div>
 
                   <button
-                    className="bg-[#F36F30] py-2 px-4 rounded text-white h-fit"
-                    onClick={() => navigate("/address")}
-                  >
-                    Add Address
-                  </button>
+  className="bg-[#F36F30] py-2 px-4 rounded text-white h-fit"
+  onClick={() =>
+    navigate("/address", {
+      state: location.state,
+    })
+  }
+>
+  Add Address
+</button>
                 </>
               )}
             </div>
